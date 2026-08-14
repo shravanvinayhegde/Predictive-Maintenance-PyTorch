@@ -1,0 +1,132 @@
+---
+interface Props {
+  code: string;
+  label?: string;
+  cell?: number;
+  sourceUrl?: string;
+}
+const { code, label, cell, sourceUrl } = Astro.props;
+
+function escapeHtml(s: string) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+const KEYWORDS = new Set([
+  "def","class","return","for","in","if","else","elif","while","import","from","as",
+  "with","try","except","self","True","False","None","and","or","not","is","lambda",
+  "yield","raise","pass","break","continue","super"
+]);
+
+function highlight(line: string): string {
+  let out = "";
+  let i = 0;
+  const n = line.length;
+  while (i < n) {
+    const ch = line[i];
+    if (ch === "#") {
+      out += `<span class="cm">${escapeHtml(line.slice(i))}</span>`;
+      break;
+    }
+    if (ch === '"' || ch === "'") {
+      let j = i + 1;
+      while (j < n && line[j] !== ch) j++;
+      const str = line.slice(i, Math.min(j + 1, n));
+      out += `<span class="st">${escapeHtml(str)}</span>`;
+      i = j + 1;
+      continue;
+    }
+    if (/[A-Za-z_]/.test(ch)) {
+      let j = i;
+      while (j < n && /[A-Za-z0-9_]/.test(line[j])) j++;
+      const word = line.slice(i, j);
+      if (KEYWORDS.has(word)) {
+        out += `<span class="kw">${escapeHtml(word)}</span>`;
+      } else {
+        out += escapeHtml(word);
+      }
+      i = j;
+      continue;
+    }
+    out += escapeHtml(ch);
+    i++;
+  }
+  return out;
+}
+
+const lines = code.split("\n");
+const highlightedLines = lines.map((l) => highlight(l));
+const width = String(lines.length).length;
+---
+<div class="code-wrap">
+  {(label || cell) && (
+    <div class="code-header">
+      <span class="mono">{label}</span>
+      {cell !== undefined && (
+        sourceUrl ? (
+          <a href={sourceUrl} target="_blank" rel="noopener" class="cell-link mono">cell {cell} ↗</a>
+        ) : (
+          <span class="mono cell-tag">cell {cell}</span>
+        )
+      )}
+    </div>
+  )}
+  <div class="code-block scroll-thin">
+    <div class="ln-col mono" aria-hidden="true">
+      {lines.map((_, i) => <span>{String(i + 1).padStart(width, " ")}</span>)}
+    </div>
+    <pre class="code-lines">{highlightedLines.map((h) => <code set:html={h + "\n"} />)}</pre>
+  </div>
+</div>
+
+<style>
+  .code-wrap { display: flex; flex-direction: column; }
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    padding: 0 2px 6px;
+  }
+  .cell-link, .cell-tag {
+    color: var(--telemetry-cyan);
+    text-decoration: none;
+    border: 1px solid var(--telemetry-cyan-dim);
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 10.5px;
+  }
+  .cell-tag { color: var(--text-dim); border-color: var(--line-hair-bright); }
+  .cell-link:hover { background: rgba(94,234,212,0.08); }
+
+  .code-block {
+    display: flex;
+    background: #0b0f16;
+    border: 1px solid var(--line-hair);
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+  .ln-col {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 12px 16px 16px;
+    color: var(--text-faint);
+    user-select: none;
+    text-align: right;
+    border-right: 1px solid var(--line-hair);
+    white-space: pre;
+  }
+  .code-lines {
+    margin: 0;
+    padding: 16px 18px;
+    color: #c9d6e8;
+    white-space: pre;
+    flex: 1;
+  }
+  .code-lines :global(.kw) { color: var(--telemetry-cyan); }
+  .code-lines :global(.cm) { color: var(--text-faint); }
+  .code-lines :global(.st) { color: var(--signal-amber); }
+</style>

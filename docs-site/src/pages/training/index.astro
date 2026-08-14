@@ -1,0 +1,125 @@
+---
+import Base from "../../layouts/Base.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+import { TRAINING_LOOP_CODE, EVAL_CODE, HYPERPARAMS, REPO } from "../../data/content";
+---
+<Base title="Training & evaluation" current="Training loop · Adam / MSE">
+  <div class="eyebrow">04 · Training & evaluation</div>
+  <h1 class="page-title">One training function, four models</h1>
+  <p class="page-sub">
+    MLP, 1D-CNN, LSTM, and GRU are trained through the same <code class="mono">train_model()</code> routine —
+    Adam optimizer, MSE loss, per-epoch validation MAE tracking — so architecture is the only thing that
+    differs between runs. The Random Forest benchmark trains separately with scikit-learn's own
+    <code class="mono">.fit()</code>.
+  </p>
+
+  <div class="flow-diagram panel" id="loop">
+    <div class="flow-step">
+      <span class="mono step-n">1</span>
+      <span>forward pass</span>
+      <span class="step-detail mono">preds = model(X_batch)</span>
+    </div>
+    <span class="flow-arrow-h">→</span>
+    <div class="flow-step">
+      <span class="mono step-n">2</span>
+      <span>MSE loss</span>
+      <span class="step-detail mono">loss_fn(preds, y_batch)</span>
+    </div>
+    <span class="flow-arrow-h">→</span>
+    <div class="flow-step">
+      <span class="mono step-n">3</span>
+      <span>backward pass</span>
+      <span class="step-detail mono">loss.backward()</span>
+    </div>
+    <span class="flow-arrow-h">→</span>
+    <div class="flow-step">
+      <span class="mono step-n">4</span>
+      <span>optimizer step</span>
+      <span class="step-detail mono">optimizer.step()</span>
+    </div>
+  </div>
+
+  <CodeBlock code={TRAINING_LOOP_CODE} label="train_model()" cell={31} sourceUrl={REPO.notebookUrl} />
+
+  <h2 class="sub-h" id="eval">Held-out test evaluation</h2>
+  <p class="page-sub small">
+    After training, every PyTorch model runs once, with gradients disabled, over the official NASA test
+    sequences (each engine's final 30-cycle window). The Random Forest is scored the same way with
+    <code class="mono">.predict()</code> on the flattened windows.
+  </p>
+  <CodeBlock code={EVAL_CODE} label="evaluate()" cell={31} sourceUrl={REPO.notebookUrl} />
+
+  <h2 class="sub-h" id="hyperparams">Hyperparameters</h2>
+  <div class="panel spec-panel">
+    <div class="spec-grid">
+      {HYPERPARAMS.map((h) => (
+        <div class="spec-row">
+          <span class="mono spec-name">{h.name}</span>
+          <span class="mono spec-value">{h.value}</span>
+          <span class="spec-where">{h.where}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-title { font-size: clamp(24px, 3vw, 32px); margin: 10px 0 12px; }
+  .page-sub { color: var(--text-dim); max-width: 70ch; font-size: 14px; line-height: 1.7; margin: 0 0 22px; }
+  .page-sub.small { margin-top: 36px; }
+  .page-sub code { color: var(--telemetry-cyan); }
+
+  .flow-diagram {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    padding: 22px;
+    margin-bottom: 22px;
+    overflow-x: auto;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-hair-bright);
+    border-radius: 6px;
+  }
+  .step-n {
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-panel-raised);
+    border: 1px solid var(--telemetry-cyan-dim);
+    color: var(--telemetry-cyan);
+    border-radius: 50%;
+    font-size: 11px;
+  }
+  .flow-step span:nth-child(2) { font-size: 13.5px; color: var(--text-primary); font-weight: 500; }
+  .step-detail { font-size: 11.5px; color: var(--text-dim); }
+  .flow-arrow-h { display: flex; align-items: center; color: var(--text-faint); font-size: 16px; }
+
+  .sub-h { font-size: 19px; margin: 40px 0 8px; }
+
+  .spec-panel { padding: 22px 24px; margin-top: 12px; }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 160px 200px 1fr;
+    gap: 12px;
+    padding: 9px 0;
+    border-top: 1px solid var(--line-hair);
+    font-size: 13px;
+    align-items: baseline;
+  }
+  .spec-row:first-child { border-top: none; }
+  .spec-name { color: var(--telemetry-cyan); }
+  .spec-where { color: var(--text-dim); }
+
+  @media (max-width: 700px) {
+    .flow-diagram { flex-direction: column; }
+    .flow-arrow-h { justify-content: center; transform: rotate(90deg); }
+    .spec-row { grid-template-columns: 1fr; gap: 3px; }
+  }
+</style>

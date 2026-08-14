@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/Predictive-Maintenance-PyTorch/favicon.svg"><title>Overview · RUL/PdM Docs</title><meta name="description" content="Interactive technical documentation and architecture review for the Predictive-Maintenance-PyTorch repository."><link rel="stylesheet" href="/Predictive-Maintenance-PyTorch/assets/index.YWUuoFuh.css">
+<style>.waveform-wrap[data-astro-cid-mlbpv62m]{width:100%;border-radius:8px;overflow:hidden;border:1px solid var(--line-hair);background:#0b0f16}.waveform-svg[data-astro-cid-mlbpv62m]{display:block;width:100%;height:auto}.trace-line[data-astro-cid-mlbpv62m]{stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 2.4s cubic-bezier(.4,0,.2,1) forwards}.trace-fill[data-astro-cid-mlbpv62m]{opacity:0;animation:fadein 1.5s ease forwards 1s}@keyframes draw{to{stroke-dashoffset:0}}@keyframes fadein{to{opacity:1}}.hero-title[data-astro-cid-j7pv25f6]{font-size:clamp(30px,4.4vw,46px);line-height:1.12;letter-spacing:-.01em;margin:14px 0 16px;max-width:16ch}.hero-sub[data-astro-cid-j7pv25f6]{color:var(--text-dim);max-width:62ch;font-size:15px;margin:0 0 26px}.hero-actions[data-astro-cid-j7pv25f6]{display:flex;gap:12px;margin-bottom:32px;flex-wrap:wrap}.btn[data-astro-cid-j7pv25f6]{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:6px;font-size:13.5px;text-decoration:none;font-weight:500;border:1px solid transparent}.btn-primary[data-astro-cid-j7pv25f6]{background:var(--telemetry-cyan);color:#06201c}.btn-primary[data-astro-cid-j7pv25f6]:hover{background:#7ff2df}.btn-ghost[data-astro-cid-j7pv25f6]{border-color:var(--line-hair-bright);color:var(--text-primary)}.btn-ghost[data-astro-cid-j7pv25f6]:hover{border-color:var(--telemetry-cyan);color:var(--telemetry-cyan)}.grid-sections[data-astro-cid-j7pv25f6]{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:40px 0 28px}.section-card[data-astro-cid-j7pv25f6]{display:block;padding:20px 20px 18px;background:var(--bg-panel);border:1px solid var(--line-hair);border-radius:8px;text-decoration:none;color:var(--text-primary);transition:border-color .15s ease,transform .15s ease}.section-card[data-astro-cid-j7pv25f6]:hover{border-color:var(--telemetry-cyan-dim);transform:translateY(-1px)}.section-n[data-astro-cid-j7pv25f6]{color:var(--signal-amber);font-size:11px}.section-card[data-astro-cid-j7pv25f6] h3[data-astro-cid-j7pv25f6]{margin:10px 0 8px;font-size:16px}.section-card[data-astro-cid-j7pv25f6] p[data-astro-cid-j7pv25f6]{margin:0;color:var(--text-dim);font-size:13px;line-height:1.6}.spec-panel[data-astro-cid-j7pv25f6],.scope-panel[data-astro-cid-j7pv25f6]{padding:22px 24px;margin-bottom:18px}.spec-head[data-astro-cid-j7pv25f6]{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.spec-head[data-astro-cid-j7pv25f6] h3[data-astro-cid-j7pv25f6]{font-size:14px}.spec-grid[data-astro-cid-j7pv25f6]{display:flex;flex-direction:column}.spec-row[data-astro-cid-j7pv25f6]{display:grid;grid-template-columns:160px 140px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line-hair);font-size:13px;align-items:baseline}.spec-row[data-astro-cid-j7pv25f6]:first-child{border-top:none}.spec-name[data-astro-cid-j7pv25f6]{color:var(--telemetry-cyan)}.spec-value[data-astro-cid-j7pv25f6]{color:var(--text-primary)}.spec-where[data-astro-cid-j7pv25f6]{color:var(--text-dim)}.scope-panel[data-astro-cid-j7pv25f6] h3[data-astro-cid-j7pv25f6]{font-size:14px;margin-bottom:10px}.scope-panel[data-astro-cid-j7pv25f6] p[data-astro-cid-j7pv25f6]{color:var(--text-dim);font-size:13.5px;line-height:1.7;margin:0}.scope-panel[data-astro-cid-j7pv25f6] a[data-astro-cid-j7pv25f6]{color:var(--telemetry-cyan)}@media (max-width: 700px){.grid-sections[data-astro-cid-j7pv25f6]{grid-template-columns:1fr}.spec-row[data-astro-cid-j7pv25f6]{grid-template-columns:1fr;gap:3px}}
+</style><script type="module" src="/Predictive-Maintenance-PyTorch/assets/hoisted.Cm7t6IQS.js"></script></head> <body> <aside class="sidebar" data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/" class="brand" data-astro-cid-ssfzsv2f> <span class="brand-mark" aria-hidden="true" data-astro-cid-ssfzsv2f> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" data-astro-cid-ssfzsv2f> <path d="M3 12h4l2-7 4 14 2-7h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-ssfzsv2f></path> </svg> </span> <span class="brand-text" data-astro-cid-ssfzsv2f> <span class="brand-title" data-astro-cid-ssfzsv2f>RUL / PdM</span> <span class="brand-sub mono" data-astro-cid-ssfzsv2f>C-MAPSS · FD001</span> </span> </a> <button id="palette-trigger" class="palette-trigger" type="button" aria-label="Open search" data-astro-cid-ssfzsv2f> <span data-astro-cid-ssfzsv2f>Search docs…</span> <span class="kbd mono" data-astro-cid-ssfzsv2f><kbd data-astro-cid-ssfzsv2f>⌘</kbd><kbd data-astro-cid-ssfzsv2f>K</kbd></span> </button> <nav class="nav" data-astro-cid-ssfzsv2f> <div class="nav-label eyebrow" data-astro-cid-ssfzsv2f>Systems</div> <ul data-astro-cid-ssfzsv2f> <li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/" class="nav-link active" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>00</span> <span data-astro-cid-ssfzsv2f>Overview</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/map/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>01</span> <span data-astro-cid-ssfzsv2f>Project map</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/pipeline/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>02</span> <span data-astro-cid-ssfzsv2f>Data pipeline</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/architecture/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>03</span> <span data-astro-cid-ssfzsv2f>Model architecture</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/training/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>04</span> <span data-astro-cid-ssfzsv2f>Training &amp; eval</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/results/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>05</span> <span data-astro-cid-ssfzsv2f>Results</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/structure/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>06</span> <span data-astro-cid-ssfzsv2f>Repository</span> </a> </li> </ul> </nav> <div class="sidebar-footer" data-astro-cid-ssfzsv2f> <a href="https://github.com/shravanvinayhegde/Predictive-Maintenance-PyTorch" target="_blank" rel="noopener" class="repo-link" data-astro-cid-ssfzsv2f> <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" data-astro-cid-ssfzsv2f><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" data-astro-cid-ssfzsv2f></path></svg> <span data-astro-cid-ssfzsv2f>Source repository</span> </a> <div class="license-note" data-astro-cid-ssfzsv2f>No license file — default copyright applies.</div> </div> </aside>  <div id="mobile-backdrop" class="mobile-backdrop"></div> <div class="shell"> <header class="hud" data-astro-cid-l26umxyd> <button id="mobile-nav-toggle" class="mobile-toggle" aria-label="Toggle navigation" data-astro-cid-l26umxyd> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" data-astro-cid-l26umxyd><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" data-astro-cid-l26umxyd></path></svg> </button> <div class="hud-item" data-astro-cid-l26umxyd> <span class="hud-label eyebrow" data-astro-cid-l26umxyd>Task</span> <span class="mono hud-val" data-astro-cid-l26umxyd>RUL regression</span> </div> <span class="hud-sep hide-xs" data-astro-cid-l26umxyd>/</span> <div class="hud-item hide-xs" data-astro-cid-l26umxyd> <span class="hud-label eyebrow" data-astro-cid-l26umxyd>Dataset</span> <span class="mono hud-val" data-astro-cid-l26umxyd>NASA C-MAPSS · FD001</span> </div> <span class="hud-sep hide-sm" data-astro-cid-l26umxyd>/</span> <div class="hud-item hide-sm" data-astro-cid-l26umxyd> <span class="hud-label eyebrow" data-astro-cid-l26umxyd>Framework</span> <span class="mono hud-val" data-astro-cid-l26umxyd>PyTorch</span> </div> <div class="hud-status" data-astro-cid-l26umxyd> <span class="dot" aria-hidden="true" data-astro-cid-l26umxyd></span> <span class="mono" data-astro-cid-l26umxyd>System nominal</span> </div> </header>  <main class="content">  <div class="eyebrow" data-astro-cid-j7pv25f6>shravanvinayhegde / predictive-maintenance-pytorch</div> <h1 class="hero-title" data-astro-cid-j7pv25f6>Remaining Useful Life,<br data-astro-cid-j7pv25f6>read straight off the sensors.</h1> <p class="hero-sub" data-astro-cid-j7pv25f6> Remaining Useful Life (RUL) prediction for aircraft turbofan engines, built entirely on PyTorch, benchmarked on NASA&#39;s C-MAPSS engine degradation dataset. This site is a code-grounded review of the implementation —
+    not a tutorial — for engineers auditing architecture, data handling, and
+    evaluation methodology.
+</p> <div class="hero-actions" data-astro-cid-j7pv25f6> <a href="/Predictive-Maintenance-PyTorch/map/" class="btn btn-primary" data-astro-cid-j7pv25f6>Open project map →</a> <a href="https://github.com/shravanvinayhegde/Predictive-Maintenance-PyTorch/blob/main/NASA_pytorch.ipynb" target="_blank" rel="noopener" class="btn btn-ghost" data-astro-cid-j7pv25f6>View NASA_pytorch.ipynb</a> </div> <div class="waveform-wrap" aria-hidden="true" data-astro-cid-mlbpv62m> <svg viewBox="0 0 900 220" preserveAspectRatio="none" class="waveform-svg" data-astro-cid-mlbpv62m> <defs data-astro-cid-mlbpv62m> <linearGradient id="traceFade" x1="0" y1="0" x2="1" y2="0" data-astro-cid-mlbpv62m> <stop offset="0%" stop-color="#5eead4" stop-opacity="0.9" data-astro-cid-mlbpv62m></stop> <stop offset="55%" stop-color="#5eead4" stop-opacity="0.55" data-astro-cid-mlbpv62m></stop> <stop offset="100%" stop-color="#ffa53d" stop-opacity="0.95" data-astro-cid-mlbpv62m></stop> </linearGradient> <linearGradient id="fillFade" x1="0" y1="0" x2="0" y2="1" data-astro-cid-mlbpv62m> <stop offset="0%" stop-color="#5eead4" stop-opacity="0.14" data-astro-cid-mlbpv62m></stop> <stop offset="100%" stop-color="#5eead4" stop-opacity="0" data-astro-cid-mlbpv62m></stop> </linearGradient> </defs> <line x1="0" y1="0" x2="0" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="56" y1="0" x2="56" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="112" y1="0" x2="112" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="168" y1="0" x2="168" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="224" y1="0" x2="224" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="280" y1="0" x2="280" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="336" y1="0" x2="336" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="392" y1="0" x2="392" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="448" y1="0" x2="448" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="504" y1="0" x2="504" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="560" y1="0" x2="560" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="616" y1="0" x2="616" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="672" y1="0" x2="672" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="728" y1="0" x2="728" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="784" y1="0" x2="784" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="840" y1="0" x2="840" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line><line x1="896" y1="0" x2="896" y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" data-astro-cid-mlbpv62m></line> <path class="trace-fill" d="M0,120 C40,110 70,130 100,118 C140,102 170,124 210,112 C250,100 280,116 320,108 C360,98 390,112 430,104 C470,96 500,112 540,118 C580,126 610,140 650,152 C690,166 720,168 760,176 C800,184 830,182 900,190 L900,220 L0,220 Z" fill="url(#fillFade)" data-astro-cid-mlbpv62m></path> <path class="trace-line" d="M0,120 C40,110 70,130 100,118 C140,102 170,124 210,112 C250,100 280,116 320,108 C360,98 390,112 430,104 C470,96 500,112 540,118 C580,126 610,140 650,152 C690,166 720,168 760,176 C800,184 830,182 900,190" fill="none" stroke="url(#traceFade)" stroke-width="2" data-astro-cid-mlbpv62m></path> <line x1="620" y1="0" x2="620" y2="220" stroke="#ffa53d" stroke-width="1" stroke-dasharray="3 4" opacity="0.55" data-astro-cid-mlbpv62m></line> <circle cx="620" cy="147" r="3.5" fill="#ffa53d" data-astro-cid-mlbpv62m></circle> <text x="628" y="24" class="mono" font-size="10.5" fill="#ffa53d" opacity="0.85" data-astro-cid-mlbpv62m>degradation onset</text> <text x="628" y="38" class="mono" font-size="10.5" fill="#7c8ba3" data-astro-cid-mlbpv62m>RUL_CAP window begins</text> </svg> </div>  <section class="grid-sections" data-astro-cid-j7pv25f6> <a href="/Predictive-Maintenance-PyTorch/pipeline/" class="section-card" data-astro-cid-j7pv25f6> <span class="section-n mono" data-astro-cid-j7pv25f6>02</span> <h3 data-astro-cid-j7pv25f6>Data pipeline</h3> <p data-astro-cid-j7pv25f6>Download → EDA → RUL labeling → engine-grouped split → standardization → sliding windows → <span class="mono" data-astro-cid-j7pv25f6>Dataset</span>/<span class="mono" data-astro-cid-j7pv25f6>DataLoader</span>. Nine stages, each traced to its notebook cell.</p> </a> <a href="/Predictive-Maintenance-PyTorch/architecture/" class="section-card" data-astro-cid-j7pv25f6> <span class="section-n mono" data-astro-cid-j7pv25f6>03</span> <h3 data-astro-cid-j7pv25f6>Model architecture</h3> <p data-astro-cid-j7pv25f6>MLP, 1D-CNN, LSTM, GRU — four PyTorch models sharing one input/output contract, plus a Random Forest used strictly as a benchmark. Layer-by-layer tensor shapes.</p> </a> <a href="/Predictive-Maintenance-PyTorch/training/" class="section-card" data-astro-cid-j7pv25f6> <span class="section-n mono" data-astro-cid-j7pv25f6>04</span> <h3 data-astro-cid-j7pv25f6>Training & evaluation</h3> <p data-astro-cid-j7pv25f6>One shared training loop for all four networks — Adam, MSE loss, per-epoch validation MAE — plus the held-out test scoring function.</p> </a> <a href="/Predictive-Maintenance-PyTorch/results/" class="section-card" data-astro-cid-j7pv25f6> <span class="section-n mono" data-astro-cid-j7pv25f6>05</span> <h3 data-astro-cid-j7pv25f6>Results</h3> <p data-astro-cid-j7pv25f6>MAE / RMSE / R² across all five models on NASA's official test engines, plus documented limitations and extension paths.</p> </a> </section> <section class="panel spec-panel" data-astro-cid-j7pv25f6> <div class="spec-head" data-astro-cid-j7pv25f6> <h3 data-astro-cid-j7pv25f6>Core hyperparameters</h3> <span class="tag" data-astro-cid-j7pv25f6>seed 42</span> </div> <div class="spec-grid" data-astro-cid-j7pv25f6> <div class="spec-row" data-astro-cid-j7pv25f6> <span class="mono spec-name" data-astro-cid-j7pv25f6>WINDOW_SIZE</span> <span class="mono spec-value" data-astro-cid-j7pv25f6>30 cycles</span> <span class="spec-where" data-astro-cid-j7pv25f6>Sequence length fed to every model</span> </div><div class="spec-row" data-astro-cid-j7pv25f6> <span class="mono spec-name" data-astro-cid-j7pv25f6>RUL_CAP</span> <span class="mono spec-value" data-astro-cid-j7pv25f6>125 cycles</span> <span class="spec-where" data-astro-cid-j7pv25f6>Piecewise-linear RUL target cap</span> </div><div class="spec-row" data-astro-cid-j7pv25f6> <span class="mono spec-name" data-astro-cid-j7pv25f6>BATCH_SIZE</span> <span class="mono spec-value" data-astro-cid-j7pv25f6>64</span> <span class="spec-where" data-astro-cid-j7pv25f6>DataLoader batching</span> </div><div class="spec-row" data-astro-cid-j7pv25f6> <span class="mono spec-name" data-astro-cid-j7pv25f6>EPOCHS</span> <span class="mono spec-value" data-astro-cid-j7pv25f6>10</span> <span class="spec-where" data-astro-cid-j7pv25f6>Training loop</span> </div><div class="spec-row" data-astro-cid-j7pv25f6> <span class="mono spec-name" data-astro-cid-j7pv25f6>LR</span> <span class="mono spec-value" data-astro-cid-j7pv25f6>1e-3</span> <span class="spec-where" data-astro-cid-j7pv25f6>Adam optimizer learning rate</span> </div><div class="spec-row" data-astro-cid-j7pv25f6> <span class="mono spec-name" data-astro-cid-j7pv25f6>Train/val split</span> <span class="mono spec-value" data-astro-cid-j7pv25f6>80% / 20%, grouped by engine</span> <span class="spec-where" data-astro-cid-j7pv25f6>GroupShuffleSplit(test_size=0.2)</span> </div><div class="spec-row" data-astro-cid-j7pv25f6> <span class="mono spec-name" data-astro-cid-j7pv25f6>Random seed</span> <span class="mono spec-value" data-astro-cid-j7pv25f6>42</span> <span class="spec-where" data-astro-cid-j7pv25f6>torch.manual_seed, np.random.seed, random_state</span> </div> </div> </section> <section class="panel scope-panel" data-astro-cid-j7pv25f6> <h3 data-astro-cid-j7pv25f6>Scope of this documentation</h3> <p data-astro-cid-j7pv25f6> <span class="mono" data-astro-cid-j7pv25f6>NASA_pytorch.ipynb</span> is the only notebook this site documents in depth — it's the
+      repository's core predictive-maintenance deliverable. <span class="mono" data-astro-cid-j7pv25f6>Experiments/</span> and
+<span class="mono" data-astro-cid-j7pv25f6>Quick-Reaps/</span> hold separate, unrelated PyTorch notebooks (image/audio/text
+      classification, and PyTorch fundamentals references) kept in the same repository for convenience; see the
+<a href="/Predictive-Maintenance-PyTorch/structure/" data-astro-cid-j7pv25f6>repository page</a> for what each one covers.
+</p> </section>  </main> </div> <div id="palette-overlay" class="palette-overlay" hidden> <div class="palette" role="dialog" aria-modal="true" aria-label="Search documentation"> <div class="palette-input-row"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" class="search-icon"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> <input id="palette-input" class="mono" type="text" placeholder="Search modules, layers, files, terms…" autocomplete="off" spellcheck="false"> <span class="esc-hint mono">ESC</span> </div> <div id="palette-results" class="palette-results scroll-thin"></div> </div> </div> <script>(function(){const base = "/Predictive-Maintenance-PyTorch/";
+
+  const overlay = document.getElementById("palette-overlay");
+  const input = document.getElementById("palette-input");
+  const results = document.getElementById("palette-results");
+  const trigger = document.getElementById("palette-trigger");
+
+  let index = [];
+  let active = 0;
+  let loaded = false;
+
+  async function ensureLoaded() {
+    if (loaded) return;
+    try {
+      const res = await fetch(base + "search-index.json");
+      index = await res.json();
+      loaded = true;
+    } catch (e) {
+      index = [];
+    }
+  }
+
+  function render(items) {
+    results.innerHTML = "";
+    if (items.length === 0) {
+      results.innerHTML = '<div class="palette-empty">No matches.</div>';
+      return;
+    }
+    let lastSection = "";
+    items.slice(0, 40).forEach((item, i) => {
+      if (item.section !== lastSection) {
+        const h = document.createElement("div");
+        h.className = "palette-section eyebrow";
+        h.textContent = item.section;
+        results.appendChild(h);
+        lastSection = item.section;
+      }
+      const a = document.createElement("a");
+      a.href = base + item.href;
+      a.className = "palette-item" + (i === active ? " active" : "");
+      a.dataset.idx = String(i);
+      a.innerHTML = `<span>${item.title}</span><span class="mono go">↵</span>`;
+      results.appendChild(a);
+    });
+  }
+
+  function filter(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return index;
+    return index.filter((item) => {
+      const hay = (item.title + " " + item.section + " " + (item.keywords || "")).toLowerCase();
+      return q.split(/\s+/).every((tok) => hay.includes(tok));
+    });
+  }
+
+  function open() {
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+    ensureLoaded().then(() => {
+      active = 0;
+      render(filter(input.value));
+    });
+    setTimeout(() => input.focus(), 0);
+  }
+
+  function close() {
+    overlay.hidden = true;
+    document.body.style.overflow = "";
+    input.value = "";
+  }
+
+  trigger?.addEventListener("click", open);
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      overlay.hidden ? open() : close();
+    } else if (e.key === "Escape" && !overlay.hidden) {
+      close();
+    }
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+
+  input.addEventListener("input", () => {
+    active = 0;
+    render(filter(input.value));
+  });
+
+  input.addEventListener("keydown", (e) => {
+    const items = results.querySelectorAll(".palette-item");
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      active = Math.min(active + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle("active", i === active));
+      items[active]?.scrollIntoView({ block: "nearest" });
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      active = Math.max(active - 1, 0);
+      items.forEach((el, i) => el.classList.toggle("active", i === active));
+      items[active]?.scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const el = items[active];
+      if (el) window.location.href = el.getAttribute("href");
+    }
+  });
+})();</script>    </body> </html> 

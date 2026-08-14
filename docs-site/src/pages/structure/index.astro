@@ -1,0 +1,110 @@
+---
+import Base from "../../layouts/Base.astro";
+import { FILE_TREE, SUBDATASETS, REPO } from "../../data/content";
+---
+<Base title="Repository" current="Structure · file map">
+  <div class="eyebrow">06 · Repository</div>
+  <h1 class="page-title">What's actually in this repo</h1>
+  <p class="page-sub">
+    <code class="mono">NASA_pytorch.ipynb</code> is the project this site documents.
+    <code class="mono">Experiments/</code> and <code class="mono">Quick-Reaps/</code> are separate,
+    self-contained notebooks kept in the same repository for reference — they don't touch the C-MAPSS
+    dataset or the RUL pipeline.
+  </p>
+
+  <div class="tree panel">
+    <div class="tree-root mono">{REPO.name}/</div>
+    <ul class="tree-list">
+      {FILE_TREE.map((node) => (
+        <li>
+          <div class="tree-row" class:list={[{ dir: node.type === "dir" }]}>
+            <span class="mono tree-name">{node.name}</span>
+            {node.note && <span class="tree-note">{node.note}</span>}
+          </div>
+          {node.children && (
+            <ul class="tree-list nested">
+              {node.children.map((child) => (
+                <li>
+                  <div class="tree-row">
+                    <span class="mono tree-name">{child.name}</span>
+                    {child.note && <span class="tree-note">{child.note}</span>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <h2 class="sub-h" id="subdatasets">C-MAPSS sub-datasets</h2>
+  <p class="page-sub small">
+    The full C-MAPSS release ships four sub-datasets of increasing complexity. This project uses
+    <strong>FD001</strong> — the simplest — to keep the modeling problem focused on sequence learning rather
+    than also disentangling multiple operating regimes.
+  </p>
+  <div class="table-wrap panel">
+    <table class="sub-table">
+      <thead>
+        <tr><th>Sub-dataset</th><th>Train engines</th><th>Test engines</th><th>Operating conditions</th><th>Fault modes</th></tr>
+      </thead>
+      <tbody>
+        {SUBDATASETS.map((d) => (
+          <tr class:list={[{ used: d.used }]}>
+            <td class="mono">{d.id} {d.used && <span class="tag used-tag">used</span>}</td>
+            <td>{d.train}</td>
+            <td>{d.test}</td>
+            <td>{d.conditions}</td>
+            <td>{d.faults}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel schema-panel">
+    <h3>File schema</h3>
+    <p>Each sub-dataset provides three whitespace-separated text files with no header row:</p>
+    <ul class="schema-list">
+      <li><span class="mono">train_FD001.txt</span> — full run-to-failure sensor histories for every training engine</li>
+      <li><span class="mono">test_FD001.txt</span> — sensor histories for test engines, truncated before failure</li>
+      <li><span class="mono">RUL_FD001.txt</span> — true remaining cycles at the truncation point (ground truth)</li>
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .page-title { font-size: clamp(24px, 3vw, 32px); margin: 10px 0 12px; }
+  .page-sub { color: var(--text-dim); max-width: 70ch; font-size: 14px; line-height: 1.7; margin: 0 0 24px; }
+  .page-sub.small { margin-top: 34px; }
+  .page-sub code { color: var(--telemetry-cyan); }
+
+  .tree { padding: 22px 26px; margin-bottom: 8px; }
+  .tree-root { color: var(--signal-amber); font-size: 14px; margin-bottom: 10px; }
+  .tree-list { list-style: none; margin: 0; padding-left: 18px; border-left: 1px solid var(--line-hair); }
+  .tree-list.nested { margin-top: 2px; margin-bottom: 6px; }
+  .tree-row { display: flex; gap: 14px; align-items: baseline; padding: 5px 0; flex-wrap: wrap; }
+  .tree-row.dir .tree-name { color: var(--telemetry-cyan); }
+  .tree-name { font-size: 13px; color: var(--text-primary); }
+  .tree-note { font-size: 12px; color: var(--text-dim); }
+
+  .sub-h { font-size: 19px; margin: 36px 0 8px; }
+
+  .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+  .sub-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .sub-table th {
+    text-align: left; padding: 11px 18px; font-size: 11px; letter-spacing: 0.06em;
+    color: var(--text-faint); text-transform: uppercase; border-bottom: 1px solid var(--line-hair);
+  }
+  .sub-table td { padding: 11px 18px; border-bottom: 1px solid var(--line-hair); color: var(--text-dim); }
+  .sub-table tr:last-child td { border-bottom: none; }
+  .sub-table tr.used td { color: var(--text-primary); }
+  .used-tag { color: var(--signal-amber); border-color: var(--signal-amber-dim); margin-left: 8px; }
+
+  .schema-panel { padding: 22px 26px; }
+  .schema-panel h3 { font-size: 14px; margin-bottom: 8px; }
+  .schema-panel p { color: var(--text-dim); font-size: 13px; margin: 0 0 10px; }
+  .schema-list { padding-left: 18px; margin: 0; color: var(--text-dim); font-size: 13px; line-height: 1.9; }
+  .schema-list .mono { color: var(--telemetry-cyan); }
+</style>

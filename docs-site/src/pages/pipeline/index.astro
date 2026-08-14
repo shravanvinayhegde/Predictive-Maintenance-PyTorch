@@ -1,0 +1,162 @@
+---
+import Base from "../../layouts/Base.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+import { PIPELINE, SENSORS, REPO } from "../../data/content";
+---
+<Base title="Data pipeline" current="Pipeline · 9 stages">
+  <div class="eyebrow">02 · Data pipeline</div>
+  <h1 class="page-title">Raw sensor logs → windowed tensors</h1>
+  <p class="page-sub">
+    Nine stages, run once at the top of the notebook, in this exact order. Select a stage to see its
+    implementation, the reasoning behind it, and the tensor shape it hands to the next stage.
+  </p>
+
+  <div class="flow-rail scroll-thin" role="tablist" aria-label="Pipeline stages">
+    {PIPELINE.map((s, i) => (
+      <>
+        <button class="flow-node" data-target={s.id} role="tab" aria-selected={i === 0 ? "true" : "false"}>
+          <span class="flow-n mono">{s.n}</span>
+          <span class="flow-title">{s.title}</span>
+        </button>
+        {i < PIPELINE.length - 1 && <span class="flow-arrow" aria-hidden="true">→</span>}
+      </>
+    ))}
+  </div>
+
+  <div class="stage-panels">
+    {PIPELINE.map((s, i) => (
+      <div class="stage-panel panel" id={s.id} data-panel={s.id} style={i === 0 ? "" : "display:none"}>
+        <div class="stage-head">
+          <div>
+            <span class="eyebrow">Stage {s.n}</span>
+            <h2>{s.title}</h2>
+          </div>
+          <div class="io-readout">
+            <div class="io-row"><span class="io-label">in</span><span class="mono">{s.ioIn}</span></div>
+            <div class="io-row"><span class="io-label out">out</span><span class="mono">{s.ioOut}</span></div>
+          </div>
+        </div>
+        <p class="stage-summary">{s.summary}</p>
+        <p class="stage-detail">{s.detail}</p>
+        <CodeBlock code={s.code} label="NASA_pytorch.ipynb" cell={s.cell} sourceUrl={REPO.notebookUrl} />
+      </div>
+    ))}
+  </div>
+
+  <section class="sensors-section" id="sensors">
+    <h2 class="sub-h">Sensor reference — FD001, 21 channels</h2>
+    <p class="page-sub small">
+      All 26 raw columns: engine ID, cycle number, 3 operational settings, 21 sensor channels. A handful of
+      these never vary in FD001 and are dropped programmatically in stage 03, not hard-coded.
+    </p>
+    <div class="sensor-table-wrap panel scroll-thin">
+      <table class="sensor-table">
+        <thead>
+          <tr><th>#</th><th>Symbol</th><th>Description</th><th>Unit</th></tr>
+        </thead>
+        <tbody>
+          {SENSORS.map((s) => (
+            <tr>
+              <td class="mono dim">{s.id}</td>
+              <td class="mono">{s.symbol}</td>
+              <td>{s.desc}</td>
+              <td class="mono dim">{s.unit}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const nodes = document.querySelectorAll<HTMLButtonElement>(".flow-node");
+  const panels = document.querySelectorAll<HTMLDivElement>("[data-panel]");
+
+  function activate(id: string, scroll = false) {
+    nodes.forEach((n) => n.setAttribute("aria-selected", String(n.dataset.target === id)));
+    panels.forEach((p) => {
+      p.style.display = p.dataset.panel === id ? "" : "none";
+    });
+    if (scroll) {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  nodes.forEach((n) => {
+    n.addEventListener("click", () => {
+      const id = n.dataset.target!;
+      activate(id, true);
+      history.replaceState(null, "", "#" + id);
+    });
+  });
+
+  const hash = window.location.hash.replace("#", "");
+  if (hash && document.getElementById(hash)) {
+    activate(hash);
+  }
+</script>
+
+<style>
+  .page-title { font-size: clamp(24px, 3vw, 32px); margin: 10px 0 12px; }
+  .page-sub { color: var(--text-dim); max-width: 68ch; font-size: 14px; line-height: 1.7; margin: 0 0 28px; }
+  .page-sub.small { font-size: 13px; margin-bottom: 18px; }
+
+  .flow-rail {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 14px 4px 20px;
+    margin-bottom: 8px;
+  }
+  .flow-node {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 14px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-hair);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    min-width: 128px;
+    text-align: left;
+  }
+  .flow-node:hover { border-color: var(--line-hair-bright); }
+  .flow-node[aria-selected="true"] {
+    border-color: var(--telemetry-cyan-dim);
+    background: var(--bg-panel-raised);
+    color: var(--text-primary);
+  }
+  .flow-n { font-size: 10px; color: var(--signal-amber); }
+  .flow-title { font-size: 12.5px; font-weight: 500; }
+  .flow-arrow { color: var(--text-faint); flex-shrink: 0; font-size: 13px; }
+
+  .stage-panel { padding: 24px 26px 26px; margin-bottom: 8px; }
+  .stage-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 14px; flex-wrap: wrap; }
+  .stage-head h2 { font-size: 19px; margin-top: 4px; }
+  .io-readout { display: flex; flex-direction: column; gap: 4px; font-size: 12px; padding: 8px 12px; background: #0b0f16; border: 1px solid var(--line-hair); border-radius: 5px; }
+  .io-row { display: flex; gap: 8px; align-items: baseline; }
+  .io-label { color: var(--text-faint); width: 22px; }
+  .io-label.out { color: var(--signal-amber); }
+  .io-row .mono { color: var(--telemetry-cyan); }
+
+  .stage-summary { font-size: 14.5px; margin: 0 0 10px; color: var(--text-primary); }
+  .stage-detail { font-size: 13.5px; color: var(--text-dim); line-height: 1.7; margin: 0 0 18px; }
+
+  .sensors-section { margin-top: 44px; }
+  .sub-h { font-size: 19px; margin-bottom: 8px; }
+  .sensor-table-wrap { max-height: 380px; overflow-y: auto; padding: 4px 0; }
+  .sensor-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .sensor-table th {
+    position: sticky; top: 0; background: var(--bg-panel);
+    text-align: left; padding: 10px 16px; font-size: 11px; letter-spacing: 0.06em;
+    color: var(--text-faint); text-transform: uppercase; border-bottom: 1px solid var(--line-hair);
+  }
+  .sensor-table td { padding: 8px 16px; border-bottom: 1px solid var(--line-hair); }
+  .sensor-table tr:last-child td { border-bottom: none; }
+  .sensor-table .dim { color: var(--text-dim); }
+</style>

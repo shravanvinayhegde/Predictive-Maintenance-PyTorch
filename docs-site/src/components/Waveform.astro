@@ -1,0 +1,61 @@
+---
+// A hand-built degradation trace: nominal noise, then a drifting decline,
+// with a marker at the point RUL_CAP (125) would engage. Purely decorative,
+// but shaped by the project's own concept (sensor drift precedes failure).
+---
+<div class="waveform-wrap" aria-hidden="true">
+  <svg viewBox="0 0 900 220" preserveAspectRatio="none" class="waveform-svg">
+    <defs>
+      <linearGradient id="traceFade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#5eead4" stop-opacity="0.9"/>
+        <stop offset="55%" stop-color="#5eead4" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#ffa53d" stop-opacity="0.95"/>
+      </linearGradient>
+      <linearGradient id="fillFade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#5eead4" stop-opacity="0.14"/>
+        <stop offset="100%" stop-color="#5eead4" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+
+    {Array.from({ length: 17 }).map((_, i) => (
+      <line x1={i * 56} y1="0" x2={i * 56} y2="220" stroke="#232b3a" stroke-width="1" opacity="0.5" />
+    ))}
+
+    <path
+      class="trace-fill"
+      d="M0,120 C40,110 70,130 100,118 C140,102 170,124 210,112 C250,100 280,116 320,108 C360,98 390,112 430,104 C470,96 500,112 540,118 C580,126 610,140 650,152 C690,166 720,168 760,176 C800,184 830,182 900,190 L900,220 L0,220 Z"
+      fill="url(#fillFade)"
+    />
+    <path
+      class="trace-line"
+      d="M0,120 C40,110 70,130 100,118 C140,102 170,124 210,112 C250,100 280,116 320,108 C360,98 390,112 430,104 C470,96 500,112 540,118 C580,126 610,140 650,152 C690,166 720,168 760,176 C800,184 830,182 900,190"
+      fill="none"
+      stroke="url(#traceFade)"
+      stroke-width="2"
+    />
+
+    <line x1="620" y1="0" x2="620" y2="220" stroke="#ffa53d" stroke-width="1" stroke-dasharray="3 4" opacity="0.55"/>
+    <circle cx="620" cy="147" r="3.5" fill="#ffa53d" />
+    <text x="628" y="24" class="mono" font-size="10.5" fill="#ffa53d" opacity="0.85">degradation onset</text>
+    <text x="628" y="38" class="mono" font-size="10.5" fill="#7c8ba3">RUL_CAP window begins</text>
+  </svg>
+</div>
+
+<style>
+  .waveform-wrap {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--line-hair);
+    background: #0b0f16;
+  }
+  .waveform-svg { display: block; width: 100%; height: auto; }
+  .trace-line {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: draw 2.4s cubic-bezier(.4,0,.2,1) forwards;
+  }
+  .trace-fill { opacity: 0; animation: fadein 1.5s ease forwards 1s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fadein { to { opacity: 1; } }
+</style>

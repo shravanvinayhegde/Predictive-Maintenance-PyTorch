@@ -1,0 +1,42 @@
+name: Deploy docs site to GitHub Pages
+
+on:
+  # Only rebuild when something inside docs-site/ actually changes
+  push:
+    branches: [main]
+    paths:
+      - "docs-site/**"
+  # Lets you trigger a deploy manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install, build, and upload the site
+        uses: withastro/action@v6
+        with:
+          path: docs-site # root of the Astro project inside this repo
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

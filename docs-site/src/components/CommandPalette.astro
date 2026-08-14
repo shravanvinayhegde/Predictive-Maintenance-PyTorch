@@ -1,0 +1,191 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+<div id="palette-overlay" class="palette-overlay" hidden>
+  <div class="palette" role="dialog" aria-modal="true" aria-label="Search documentation">
+    <div class="palette-input-row">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" class="search-icon"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="palette-input" class="mono" type="text" placeholder="Search modules, layers, files, terms…" autocomplete="off" spellcheck="false" />
+      <span class="esc-hint mono">ESC</span>
+    </div>
+    <div id="palette-results" class="palette-results scroll-thin"></div>
+  </div>
+</div>
+
+<script define:vars={{ base }}>
+  const overlay = document.getElementById("palette-overlay");
+  const input = document.getElementById("palette-input");
+  const results = document.getElementById("palette-results");
+  const trigger = document.getElementById("palette-trigger");
+
+  let index = [];
+  let active = 0;
+  let loaded = false;
+
+  async function ensureLoaded() {
+    if (loaded) return;
+    try {
+      const res = await fetch(base + "search-index.json");
+      index = await res.json();
+      loaded = true;
+    } catch (e) {
+      index = [];
+    }
+  }
+
+  function render(items) {
+    results.innerHTML = "";
+    if (items.length === 0) {
+      results.innerHTML = '<div class="palette-empty">No matches.</div>';
+      return;
+    }
+    let lastSection = "";
+    items.slice(0, 40).forEach((item, i) => {
+      if (item.section !== lastSection) {
+        const h = document.createElement("div");
+        h.className = "palette-section eyebrow";
+        h.textContent = item.section;
+        results.appendChild(h);
+        lastSection = item.section;
+      }
+      const a = document.createElement("a");
+      a.href = base + item.href;
+      a.className = "palette-item" + (i === active ? " active" : "");
+      a.dataset.idx = String(i);
+      a.innerHTML = `<span>${item.title}</span><span class="mono go">↵</span>`;
+      results.appendChild(a);
+    });
+  }
+
+  function filter(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return index;
+    return index.filter((item) => {
+      const hay = (item.title + " " + item.section + " " + (item.keywords || "")).toLowerCase();
+      return q.split(/\s+/).every((tok) => hay.includes(tok));
+    });
+  }
+
+  function open() {
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+    ensureLoaded().then(() => {
+      active = 0;
+      render(filter(input.value));
+    });
+    setTimeout(() => input.focus(), 0);
+  }
+
+  function close() {
+    overlay.hidden = true;
+    document.body.style.overflow = "";
+    input.value = "";
+  }
+
+  trigger?.addEventListener("click", open);
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      overlay.hidden ? open() : close();
+    } else if (e.key === "Escape" && !overlay.hidden) {
+      close();
+    }
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+
+  input.addEventListener("input", () => {
+    active = 0;
+    render(filter(input.value));
+  });
+
+  input.addEventListener("keydown", (e) => {
+    const items = results.querySelectorAll(".palette-item");
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      active = Math.min(active + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle("active", i === active));
+      items[active]?.scrollIntoView({ block: "nearest" });
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      active = Math.max(active - 1, 0);
+      items.forEach((el, i) => el.classList.toggle("active", i === active));
+      items[active]?.scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const el = items[active];
+      if (el) window.location.href = el.getAttribute("href");
+    }
+  });
+</script>
+
+<style is:global>
+  .palette-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(5, 7, 10, 0.7);
+    backdrop-filter: blur(3px);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 12vh;
+  }
+  .palette-overlay:not([hidden]) {
+    display: flex;
+  }
+  .palette {
+    width: min(560px, 92vw);
+    max-height: 60vh;
+    background: var(--bg-panel-raised);
+    border: 1px solid var(--line-hair-bright);
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .palette-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line-hair);
+  }
+  .search-icon { color: var(--text-dim); flex-shrink: 0; }
+  #palette-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: 14px;
+  }
+  #palette-input::placeholder { color: var(--text-faint); }
+  .esc-hint {
+    font-size: 10px;
+    color: var(--text-faint);
+    border: 1px solid var(--line-hair-bright);
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+  .palette-results { overflow-y: auto; padding: 6px; }
+  .palette-section { padding: 8px 10px 4px; }
+  .palette-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 13.5px;
+  }
+  .palette-item .go { color: var(--text-faint); font-size: 11px; opacity: 0; }
+  .palette-item.active { background: var(--bg-panel); }
+  .palette-item.active .go { opacity: 1; color: var(--telemetry-cyan); }
+  .palette-empty { padding: 20px; color: var(--text-dim); font-size: 13px; text-align: center; }
+</style>

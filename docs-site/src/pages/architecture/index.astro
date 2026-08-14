@@ -1,0 +1,151 @@
+---
+import Base from "../../layouts/Base.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+import { MODELS, REPO } from "../../data/content";
+---
+<Base title="Model architecture" current="Architecture · 5 models">
+  <div class="eyebrow">03 · Model architecture</div>
+  <h1 class="page-title">One contract, five implementations</h1>
+  <p class="page-sub">
+    Every model takes a <code class="mono">(batch, 30, n_features)</code> sequence and outputs a single scalar —
+    predicted RUL. Four PyTorch architectures share this input/output contract; a Random Forest sits alongside
+    them as a non-deep-learning benchmark, not part of the modeling approach. Select a layer to read its tensor
+    shape transformation.
+  </p>
+
+  <div class="model-tabs" role="tablist">
+    {MODELS.map((m, i) => (
+      <button class="model-tab" data-model={m.id} aria-selected={i === 0 ? "true" : "false"}>
+        <span class="mono model-tab-name">{m.name}</span>
+        <span class="model-tab-kind">{m.kind}</span>
+      </button>
+    ))}
+  </div>
+
+  {MODELS.map((m, i) => (
+    <div class="model-panel" id={m.id} data-model-panel={m.id} style={i === 0 ? "" : "display:none"}>
+      <p class="approach">{m.approach}</p>
+
+      <div class="dag-wrap panel">
+        <div class="dag">
+          {m.layers.map((l, li) => (
+            <>
+              <button class="dag-node" data-shape={l.shape} data-label={l.label} aria-selected={li === 0 ? "true" : "false"}>
+                {l.label}
+              </button>
+              {li < m.layers.length - 1 && <span class="dag-arrow" aria-hidden="true">↓</span>}
+            </>
+          ))}
+        </div>
+        <div class="shape-readout">
+          <span class="eyebrow">Tensor shape</span>
+          <span class="mono shape-value">{m.layers[0].shape}</span>
+        </div>
+      </div>
+
+      <CodeBlock code={m.code} label={`${m.name}Model`} cell={m.cell} sourceUrl={REPO.notebookUrl} />
+    </div>
+  ))}
+</Base>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>(".model-tab");
+  const panels = document.querySelectorAll<HTMLDivElement>("[data-model-panel]");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const id = tab.dataset.model!;
+      tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.model === id)));
+      panels.forEach((p) => (p.style.display = p.dataset.modelPanel === id ? "" : "none"));
+      history.replaceState(null, "", "#" + id);
+    });
+  });
+
+  function wireDag(panel: Element) {
+    const nodes = panel.querySelectorAll<HTMLButtonElement>(".dag-node");
+    const readout = panel.querySelector<HTMLElement>(".shape-value");
+    nodes.forEach((node) => {
+      node.addEventListener("click", () => {
+        nodes.forEach((n) => n.setAttribute("aria-selected", "false"));
+        node.setAttribute("aria-selected", "true");
+        if (readout) readout.textContent = node.dataset.shape || "";
+      });
+    });
+  }
+  document.querySelectorAll("[data-model-panel]").forEach(wireDag);
+
+  const hash = window.location.hash.replace("#", "");
+  if (hash) {
+    const tab = document.querySelector<HTMLButtonElement>(`.model-tab[data-model="${hash}"]`);
+    tab?.click();
+  }
+</script>
+
+<style>
+  .page-title { font-size: clamp(24px, 3vw, 32px); margin: 10px 0 12px; }
+  .page-sub { color: var(--text-dim); max-width: 70ch; font-size: 14px; line-height: 1.7; margin: 0 0 26px; }
+  .page-sub code { color: var(--telemetry-cyan); background: none; }
+
+  .model-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; border-bottom: 1px solid var(--line-hair); padding-bottom: 0; }
+  .model-tab {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 10px 16px 12px;
+    background: none; border: none; border-bottom: 2px solid transparent;
+    cursor: pointer; color: var(--text-dim);
+  }
+  .model-tab-name { font-size: 13.5px; }
+  .model-tab-kind { font-size: 10.5px; color: var(--text-faint); }
+  .model-tab[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--telemetry-cyan); }
+  .model-tab[aria-selected="true"] .model-tab-kind { color: var(--telemetry-cyan); }
+
+  .approach { font-size: 14.5px; color: var(--text-primary); max-width: 70ch; margin: 0 0 20px; line-height: 1.6; }
+
+  .dag-wrap {
+    display: flex;
+    gap: 24px;
+    padding: 26px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .dag { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .dag-node {
+    min-width: 220px;
+    padding: 10px 18px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-hair-bright);
+    border-radius: 5px;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    text-align: center;
+  }
+  .dag-node:hover { color: var(--text-primary); }
+  .dag-node[aria-selected="true"] {
+    color: #06201c;
+    background: var(--telemetry-cyan);
+    border-color: var(--telemetry-cyan);
+    font-weight: 600;
+  }
+  .dag-arrow { color: var(--text-faint); font-size: 13px; }
+
+  .shape-readout {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 22px;
+    background: #0b0f16;
+    border: 1px solid var(--line-hair);
+    border-radius: 6px;
+    min-width: 200px;
+  }
+  .shape-value { font-size: 20px; color: var(--signal-amber); }
+
+  @media (max-width: 700px) {
+    .dag-wrap { flex-direction: column; }
+    .shape-readout { margin-left: 0; width: 100%; }
+    .dag-node { min-width: 0; width: 100%; }
+  }
+</style>

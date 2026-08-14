@@ -1,0 +1,83 @@
+---
+interface Props { current: string; }
+const { current } = Astro.props;
+---
+<header class="hud">
+  <button id="mobile-nav-toggle" class="mobile-toggle" aria-label="Toggle navigation">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <div class="hud-item">
+    <span class="hud-label eyebrow">Task</span>
+    <span class="mono hud-val">RUL regression</span>
+  </div>
+  <span class="hud-sep hide-xs">/</span>
+  <div class="hud-item hide-xs">
+    <span class="hud-label eyebrow">Dataset</span>
+    <span class="mono hud-val">NASA C-MAPSS · FD001</span>
+  </div>
+  <span class="hud-sep hide-sm">/</span>
+  <div class="hud-item hide-sm">
+    <span class="hud-label eyebrow">Framework</span>
+    <span class="mono hud-val">PyTorch</span>
+  </div>
+  <div class="hud-status">
+    <span class="dot" aria-hidden="true"></span>
+    <span class="mono">{current}</span>
+  </div>
+</header>
+
+<style>
+  .hud {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: var(--hud-h);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 20px;
+    background: rgba(10, 13, 18, 0.75);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-hair);
+    font-size: 11.5px;
+    overflow: hidden;
+  }
+  .mobile-toggle {
+    display: none;
+    background: none; border: 1px solid var(--line-hair-bright);
+    color: var(--text-primary);
+    border-radius: 4px;
+    width: 28px; height: 28px;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .hud-item { display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0; }
+  .hud-label { color: var(--text-faint); }
+  .hud-val { color: var(--text-dim); }
+  .hud-sep { color: var(--line-hair-bright); flex-shrink: 0; }
+  .hud-status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--telemetry-cyan);
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-left: 10px;
+  }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--telemetry-cyan);
+    box-shadow: 0 0 8px var(--telemetry-cyan);
+    flex-shrink: 0;
+  }
+  @media (max-width: 900px) {
+    .mobile-toggle { display: flex; }
+    .hide-sm { display: none; }
+  }
+  @media (max-width: 560px) {
+    .hide-xs { display: none; }
+    .hud { padding: 0 14px; gap: 10px; }
+  }
+</style>

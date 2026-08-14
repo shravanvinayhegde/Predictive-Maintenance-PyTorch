@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/svg+xml" href="/Predictive-Maintenance-PyTorch/favicon.svg"><title>Results · RUL/PdM Docs</title><meta name="description" content="Interactive technical documentation and architecture review for the Predictive-Maintenance-PyTorch repository."><link rel="stylesheet" href="/Predictive-Maintenance-PyTorch/assets/index.YWUuoFuh.css">
+<style>.page-title[data-astro-cid-75fpftsr]{font-size:clamp(24px,3vw,32px);margin:10px 0 12px}.page-sub[data-astro-cid-75fpftsr]{color:var(--text-dim);max-width:70ch;font-size:14px;line-height:1.7;margin:0 0 24px}.table-wrap[data-astro-cid-75fpftsr]{overflow-x:auto;margin-bottom:20px}.results-table[data-astro-cid-75fpftsr]{width:100%;border-collapse:collapse;font-size:13.5px}.results-table[data-astro-cid-75fpftsr] th[data-astro-cid-75fpftsr]{text-align:left;padding:12px 20px;font-size:11px;letter-spacing:.06em;color:var(--text-faint);text-transform:uppercase;border-bottom:1px solid var(--line-hair)}.results-table[data-astro-cid-75fpftsr] td[data-astro-cid-75fpftsr]{padding:12px 20px;border-bottom:1px solid var(--line-hair)}.results-table[data-astro-cid-75fpftsr] tr[data-astro-cid-75fpftsr]:last-child td[data-astro-cid-75fpftsr]{border-bottom:none}.model-cell[data-astro-cid-75fpftsr]{color:var(--text-primary)}.unset[data-astro-cid-75fpftsr]{color:var(--text-faint);font-style:italic;font-size:12.5px}.metric-defs[data-astro-cid-75fpftsr]{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:20px}.metric-def[data-astro-cid-75fpftsr]{padding:18px 20px;border-right:1px solid var(--line-hair)}.metric-def[data-astro-cid-75fpftsr]:last-child{border-right:none}.metric-name[data-astro-cid-75fpftsr]{color:var(--telemetry-cyan);font-size:13px}.metric-def[data-astro-cid-75fpftsr] p[data-astro-cid-75fpftsr]{margin:8px 0 0;color:var(--text-dim);font-size:12.5px;line-height:1.6}.questions[data-astro-cid-75fpftsr]{color:var(--text-dim);font-size:13.5px;line-height:1.7;max-width:70ch;margin:0 0 8px}.sub-h[data-astro-cid-75fpftsr]{font-size:19px;margin:40px 0 14px}.limitations-list[data-astro-cid-75fpftsr]{padding-left:20px;margin:0 0 30px;color:var(--text-dim);font-size:13.5px;line-height:1.9;max-width:74ch}.limitations-list[data-astro-cid-75fpftsr] li[data-astro-cid-75fpftsr]{margin-bottom:6px}.reproduce[data-astro-cid-75fpftsr]{padding:22px 24px}.reproduce[data-astro-cid-75fpftsr] h3[data-astro-cid-75fpftsr]{font-size:14px;margin-bottom:12px}.reproduce[data-astro-cid-75fpftsr] .code-block[data-astro-cid-75fpftsr]{margin-bottom:12px;color:var(--telemetry-cyan)}.reproduce[data-astro-cid-75fpftsr] p[data-astro-cid-75fpftsr]{color:var(--text-dim);font-size:13px;margin:0}.reproduce[data-astro-cid-75fpftsr] a[data-astro-cid-75fpftsr]{color:var(--telemetry-cyan)}@media (max-width: 700px){.metric-defs[data-astro-cid-75fpftsr]{grid-template-columns:1fr}.metric-def[data-astro-cid-75fpftsr]{border-right:none;border-bottom:1px solid var(--line-hair)}.metric-def[data-astro-cid-75fpftsr]:last-child{border-bottom:none}}
+</style><script type="module" src="/Predictive-Maintenance-PyTorch/assets/hoisted.Cm7t6IQS.js"></script></head> <body> <aside class="sidebar" data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/" class="brand" data-astro-cid-ssfzsv2f> <span class="brand-mark" aria-hidden="true" data-astro-cid-ssfzsv2f> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" data-astro-cid-ssfzsv2f> <path d="M3 12h4l2-7 4 14 2-7h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-ssfzsv2f></path> </svg> </span> <span class="brand-text" data-astro-cid-ssfzsv2f> <span class="brand-title" data-astro-cid-ssfzsv2f>RUL / PdM</span> <span class="brand-sub mono" data-astro-cid-ssfzsv2f>C-MAPSS · FD001</span> </span> </a> <button id="palette-trigger" class="palette-trigger" type="button" aria-label="Open search" data-astro-cid-ssfzsv2f> <span data-astro-cid-ssfzsv2f>Search docs…</span> <span class="kbd mono" data-astro-cid-ssfzsv2f><kbd data-astro-cid-ssfzsv2f>⌘</kbd><kbd data-astro-cid-ssfzsv2f>K</kbd></span> </button> <nav class="nav" data-astro-cid-ssfzsv2f> <div class="nav-label eyebrow" data-astro-cid-ssfzsv2f>Systems</div> <ul data-astro-cid-ssfzsv2f> <li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>00</span> <span data-astro-cid-ssfzsv2f>Overview</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/map/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>01</span> <span data-astro-cid-ssfzsv2f>Project map</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/pipeline/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>02</span> <span data-astro-cid-ssfzsv2f>Data pipeline</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/architecture/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>03</span> <span data-astro-cid-ssfzsv2f>Model architecture</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/training/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>04</span> <span data-astro-cid-ssfzsv2f>Training &amp; eval</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/results/" class="nav-link active" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>05</span> <span data-astro-cid-ssfzsv2f>Results</span> </a> </li><li data-astro-cid-ssfzsv2f> <a href="/Predictive-Maintenance-PyTorch/structure/" class="nav-link" data-astro-cid-ssfzsv2f> <span class="nav-n mono" data-astro-cid-ssfzsv2f>06</span> <span data-astro-cid-ssfzsv2f>Repository</span> </a> </li> </ul> </nav> <div class="sidebar-footer" data-astro-cid-ssfzsv2f> <a href="https://github.com/shravanvinayhegde/Predictive-Maintenance-PyTorch" target="_blank" rel="noopener" class="repo-link" data-astro-cid-ssfzsv2f> <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" data-astro-cid-ssfzsv2f><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" data-astro-cid-ssfzsv2f></path></svg> <span data-astro-cid-ssfzsv2f>Source repository</span> </a> <div class="license-note" data-astro-cid-ssfzsv2f>No license file — default copyright applies.</div> </div> </aside>  <div id="mobile-backdrop" class="mobile-backdrop"></div> <div class="shell"> <header class="hud" data-astro-cid-l26umxyd> <button id="mobile-nav-toggle" class="mobile-toggle" aria-label="Toggle navigation" data-astro-cid-l26umxyd> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" data-astro-cid-l26umxyd><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" data-astro-cid-l26umxyd></path></svg> </button> <div class="hud-item" data-astro-cid-l26umxyd> <span class="hud-label eyebrow" data-astro-cid-l26umxyd>Task</span> <span class="mono hud-val" data-astro-cid-l26umxyd>RUL regression</span> </div> <span class="hud-sep hide-xs" data-astro-cid-l26umxyd>/</span> <div class="hud-item hide-xs" data-astro-cid-l26umxyd> <span class="hud-label eyebrow" data-astro-cid-l26umxyd>Dataset</span> <span class="mono hud-val" data-astro-cid-l26umxyd>NASA C-MAPSS · FD001</span> </div> <span class="hud-sep hide-sm" data-astro-cid-l26umxyd>/</span> <div class="hud-item hide-sm" data-astro-cid-l26umxyd> <span class="hud-label eyebrow" data-astro-cid-l26umxyd>Framework</span> <span class="mono hud-val" data-astro-cid-l26umxyd>PyTorch</span> </div> <div class="hud-status" data-astro-cid-l26umxyd> <span class="dot" aria-hidden="true" data-astro-cid-l26umxyd></span> <span class="mono" data-astro-cid-l26umxyd>Results · unpopulated</span> </div> </header>  <main class="content">  <div class="eyebrow" data-astro-cid-75fpftsr>05 · Results</div> <h1 class="page-title" data-astro-cid-75fpftsr>Test-set comparison</h1> <p class="page-sub" data-astro-cid-75fpftsr>
+The notebook doesn't ship with pre-executed outputs, so no numbers are fabricated here — run it end-to-end
+    in Colab or locally to populate this table on your own machine. All five models are scored identically on
+    NASA's official, held-out FD001 test engines.
+</p> <div class="table-wrap panel" data-astro-cid-75fpftsr> <table class="results-table" data-astro-cid-75fpftsr> <thead data-astro-cid-75fpftsr> <tr data-astro-cid-75fpftsr> <th data-astro-cid-75fpftsr>Model</th> <th data-astro-cid-75fpftsr>Test MAE (cycles)</th> <th data-astro-cid-75fpftsr>Test RMSE</th> <th data-astro-cid-75fpftsr>Test R²</th> </tr> </thead> <tbody data-astro-cid-75fpftsr> <tr data-astro-cid-75fpftsr> <td class="mono model-cell" data-astro-cid-75fpftsr>MLP</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> </tr><tr data-astro-cid-75fpftsr> <td class="mono model-cell" data-astro-cid-75fpftsr>1D-CNN</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> </tr><tr data-astro-cid-75fpftsr> <td class="mono model-cell" data-astro-cid-75fpftsr>LSTM</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> </tr><tr data-astro-cid-75fpftsr> <td class="mono model-cell" data-astro-cid-75fpftsr>GRU</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> </tr><tr data-astro-cid-75fpftsr> <td class="mono model-cell" data-astro-cid-75fpftsr>Random Forest (benchmark)</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> <td class="unset" data-astro-cid-75fpftsr>Not reported in repository</td> </tr> </tbody> </table> </div> <div class="metric-defs panel" data-astro-cid-75fpftsr> <div class="metric-def" data-astro-cid-75fpftsr> <span class="mono metric-name" data-astro-cid-75fpftsr>MAE</span> <p data-astro-cid-75fpftsr>Mean Absolute Error — average absolute difference between predicted and true RUL, in cycles. The most directly interpretable metric here.</p> </div> <div class="metric-def" data-astro-cid-75fpftsr> <span class="mono metric-name" data-astro-cid-75fpftsr>RMSE</span> <p data-astro-cid-75fpftsr>Root Mean Squared Error — like MAE but penalizes large errors more heavily.</p> </div> <div class="metric-def" data-astro-cid-75fpftsr> <span class="mono metric-name" data-astro-cid-75fpftsr>R²</span> <p data-astro-cid-75fpftsr>Coefficient of determination — how much of the variance in true RUL is explained by the model's predictions.</p> </div> </div> <p class="questions" data-astro-cid-75fpftsr>
+Two questions worth checking once you have results: does any PyTorch model actually beat the Random
+    Forest benchmark? And do the recurrent models (LSTM/GRU) outperform the simpler MLP/CNN — i.e. does
+    explicit sequence order help on this particular fault mode?
+</p> <h2 class="sub-h" id="limitations" data-astro-cid-75fpftsr>Limitations & possible extensions</h2> <ul class="limitations-list" data-astro-cid-75fpftsr> <li data-astro-cid-75fpftsr>Single sub-dataset: only FD001 (1 operating condition, 1 fault mode) is used. FD002–FD004 add multiple operating conditions and a second fault mode, which typically requires per-condition normalization instead of a single global standardization.</li><li data-astro-cid-75fpftsr>Fixed training budget: 10 epochs, no learning-rate scheduling, no early stopping, and no hyperparameter search — the comparison is meant to be a fair like-for-like baseline across architectures, not a tuned leaderboard entry.</li><li data-astro-cid-75fpftsr>Single train/validation split: one GroupShuffleSplit, not k-fold cross-validation, so validation metrics carry some split-to-split variance.</li><li data-astro-cid-75fpftsr>No attention-based or Transformer sequence model is included alongside the MLP/CNN/LSTM/GRU comparison.</li><li data-astro-cid-75fpftsr>No official PHM scoring function: the standard C-MAPSS literature also reports an asymmetric &quot;PHM score&quot; that penalizes late predictions more than early ones; this project reports MAE/RMSE/R² only.</li> </ul> <div class="reproduce panel" data-astro-cid-75fpftsr> <h3 data-astro-cid-75fpftsr>Reproduce this table</h3> <pre class="code-block mono" data-astro-cid-75fpftsr>git clone https://github.com/shravanvinayhegde/Predictive-Maintenance-PyTorch.git
+cd Predictive-Maintenance-PyTorch
+jupyter notebook NASA_pytorch.ipynb</pre> <p data-astro-cid-75fpftsr>Or open it directly in <a href="https://colab.research.google.com/github/shravanvinayhegde/Predictive-Maintenance-PyTorch/blob/main/NASA_pytorch.ipynb" target="_blank" rel="noopener" data-astro-cid-75fpftsr>Colab</a> — no manual dataset download required, the first two cells fetch and extract C-MAPSS FD001 automatically. A CUDA GPU is optional; device selection is automatic.</p> </div>  </main> </div> <div id="palette-overlay" class="palette-overlay" hidden> <div class="palette" role="dialog" aria-modal="true" aria-label="Search documentation"> <div class="palette-input-row"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" class="search-icon"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> <input id="palette-input" class="mono" type="text" placeholder="Search modules, layers, files, terms…" autocomplete="off" spellcheck="false"> <span class="esc-hint mono">ESC</span> </div> <div id="palette-results" class="palette-results scroll-thin"></div> </div> </div> <script>(function(){const base = "/Predictive-Maintenance-PyTorch/";
+
+  const overlay = document.getElementById("palette-overlay");
+  const input = document.getElementById("palette-input");
+  const results = document.getElementById("palette-results");
+  const trigger = document.getElementById("palette-trigger");
+
+  let index = [];
+  let active = 0;
+  let loaded = false;
+
+  async function ensureLoaded() {
+    if (loaded) return;
+    try {
+      const res = await fetch(base + "search-index.json");
+      index = await res.json();
+      loaded = true;
+    } catch (e) {
+      index = [];
+    }
+  }
+
+  function render(items) {
+    results.innerHTML = "";
+    if (items.length === 0) {
+      results.innerHTML = '<div class="palette-empty">No matches.</div>';
+      return;
+    }
+    let lastSection = "";
+    items.slice(0, 40).forEach((item, i) => {
+      if (item.section !== lastSection) {
+        const h = document.createElement("div");
+        h.className = "palette-section eyebrow";
+        h.textContent = item.section;
+        results.appendChild(h);
+        lastSection = item.section;
+      }
+      const a = document.createElement("a");
+      a.href = base + item.href;
+      a.className = "palette-item" + (i === active ? " active" : "");
+      a.dataset.idx = String(i);
+      a.innerHTML = `<span>${item.title}</span><span class="mono go">↵</span>`;
+      results.appendChild(a);
+    });
+  }
+
+  function filter(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return index;
+    return index.filter((item) => {
+      const hay = (item.title + " " + item.section + " " + (item.keywords || "")).toLowerCase();
+      return q.split(/\s+/).every((tok) => hay.includes(tok));
+    });
+  }
+
+  function open() {
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+    ensureLoaded().then(() => {
+      active = 0;
+      render(filter(input.value));
+    });
+    setTimeout(() => input.focus(), 0);
+  }
+
+  function close() {
+    overlay.hidden = true;
+    document.body.style.overflow = "";
+    input.value = "";
+  }
+
+  trigger?.addEventListener("click", open);
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      overlay.hidden ? open() : close();
+    } else if (e.key === "Escape" && !overlay.hidden) {
+      close();
+    }
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+
+  input.addEventListener("input", () => {
+    active = 0;
+    render(filter(input.value));
+  });
+
+  input.addEventListener("keydown", (e) => {
+    const items = results.querySelectorAll(".palette-item");
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      active = Math.min(active + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle("active", i === active));
+      items[active]?.scrollIntoView({ block: "nearest" });
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      active = Math.max(active - 1, 0);
+      items.forEach((el, i) => el.classList.toggle("active", i === active));
+      items[active]?.scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const el = items[active];
+      if (el) window.location.href = el.getAttribute("href");
+    }
+  });
+})();</script>    </body> </html> 

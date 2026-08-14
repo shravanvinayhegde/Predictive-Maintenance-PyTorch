@@ -1,0 +1,178 @@
+---
+import Base from "../../layouts/Base.astro";
+import { PIPELINE, MODELS, FILE_TREE, HYPERPARAMS, REPO } from "../../data/content";
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Project map" current="Map · 1-minute review">
+  <div class="eyebrow">01 · Project map</div>
+  <h1 class="page-title">Everything on one screen</h1>
+  <p class="page-sub">A single static reference — purpose, stack, data flow, model pipeline, file layout, and I/O — for a fast pass before diving into the interactive pages.</p>
+
+  <div class="map-grid">
+    <div class="panel map-cell purpose">
+      <span class="eyebrow">Purpose</span>
+      <p>{REPO.tagline}</p>
+      <div class="stack-tags">
+        <span class="tag">PyTorch</span>
+        <span class="tag">pandas / NumPy</span>
+        <span class="tag">scikit-learn (benchmark + metrics)</span>
+        <span class="tag">Python 3.9+</span>
+      </div>
+    </div>
+
+    <div class="panel map-cell io">
+      <span class="eyebrow">Input → Output</span>
+      <div class="io-flow">
+        <div class="io-box">
+          <span class="mono">(30, 21) sensor window</span>
+          <span class="io-sub">per engine, standardized</span>
+        </div>
+        <span class="io-arrow">→</span>
+        <div class="io-box highlight">
+          <span class="mono">model(x)</span>
+          <span class="io-sub">MLP / CNN / LSTM / GRU / RF</span>
+        </div>
+        <span class="io-arrow">→</span>
+        <div class="io-box">
+          <span class="mono">RUL (cycles)</span>
+          <span class="io-sub">scalar, capped at 125</span>
+        </div>
+      </div>
+      <p class="deploy-note">No deployment/inference script is included in the repository — the notebook covers training and offline evaluation only.</p>
+    </div>
+
+    <div class="panel map-cell pipeline-map">
+      <span class="eyebrow">Data flow</span>
+      <div class="mini-flow">
+        {PIPELINE.map((s, i) => (
+          <>
+            <a href={base + "pipeline/#" + s.id} class="mini-node">
+              <span class="mono mini-n">{s.n}</span>{s.title}
+            </a>
+            {i < PIPELINE.length - 1 && <span class="mini-arrow">→</span>}
+          </>
+        ))}
+      </div>
+    </div>
+
+    <div class="panel map-cell models-map">
+      <span class="eyebrow">Model pipeline</span>
+      <div class="model-chips">
+        {MODELS.map((m) => (
+          <a href={base + "architecture/#" + m.id} class="model-chip">
+            <span class="mono">{m.name}</span>
+            <span class="chip-sub">{m.keyLayers}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="panel map-cell hp-map">
+      <span class="eyebrow">Hyperparameters</span>
+      <div class="hp-list">
+        {HYPERPARAMS.map((h) => (
+          <div class="hp-row"><span class="mono">{h.name}</span><span class="mono hp-val">{h.value}</span></div>
+        ))}
+      </div>
+    </div>
+
+    <div class="panel map-cell tree-map">
+      <span class="eyebrow">Repository</span>
+      <div class="mini-tree">
+        {FILE_TREE.map((node) => (
+          <div>
+            <div class="mini-tree-row" class:list={[{ dir: node.type === "dir" }]}>
+              <span class="mono">{node.name}</span>
+            </div>
+            {node.children && (
+              <div class="mini-tree-children">
+                {node.children.map((c) => (
+                  <div class="mini-tree-row child"><span class="mono">{c.name}</span></div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-title { font-size: clamp(24px, 3vw, 32px); margin: 10px 0 12px; }
+  .page-sub { color: var(--text-dim); max-width: 70ch; font-size: 14px; line-height: 1.7; margin: 0 0 26px; }
+
+  .map-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .map-cell { padding: 18px 20px; }
+  .map-cell .eyebrow { display: block; margin-bottom: 10px; }
+
+  .purpose p { font-size: 13.5px; color: var(--text-primary); line-height: 1.6; margin: 0 0 12px; }
+  .stack-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .io-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .io-box {
+    flex: 1; min-width: 130px;
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 10px 12px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-hair-bright);
+    border-radius: 5px;
+    font-size: 12px;
+  }
+  .io-box.highlight { border-color: var(--telemetry-cyan-dim); }
+  .io-sub { color: var(--text-faint); font-size: 10.5px; }
+  .io-arrow { color: var(--text-faint); }
+  .deploy-note { margin: 12px 0 0; font-size: 11.5px; color: var(--text-faint); line-height: 1.6; }
+
+  .pipeline-map, .models-map { grid-column: span 2; }
+
+  .mini-flow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .mini-node {
+    display: flex; gap: 6px; align-items: center;
+    padding: 6px 10px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-hair);
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  .mini-node:hover { border-color: var(--telemetry-cyan-dim); color: var(--text-primary); }
+  .mini-n { color: var(--signal-amber); font-size: 10px; }
+  .mini-arrow { color: var(--text-faint); font-size: 12px; }
+
+  .model-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .model-chip {
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 10px 14px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-hair-bright);
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--text-primary);
+    min-width: 150px;
+    flex: 1;
+  }
+  .model-chip:hover { border-color: var(--telemetry-cyan-dim); }
+  .chip-sub { font-size: 10.5px; color: var(--text-faint); }
+
+  .hp-list { display: flex; flex-direction: column; gap: 2px; }
+  .hp-row { display: flex; justify-content: space-between; padding: 6px 0; border-top: 1px solid var(--line-hair); font-size: 12px; }
+  .hp-row:first-child { border-top: none; }
+  .hp-val { color: var(--telemetry-cyan); }
+
+  .mini-tree { font-size: 12px; }
+  .mini-tree-row { padding: 3px 0; color: var(--text-dim); }
+  .mini-tree-row.dir { color: var(--telemetry-cyan); }
+  .mini-tree-children { padding-left: 14px; border-left: 1px solid var(--line-hair); margin: 2px 0 6px; }
+  .mini-tree-row.child { font-size: 11.5px; color: var(--text-faint); }
+
+  @media (max-width: 800px) {
+    .map-grid { grid-template-columns: 1fr; }
+    .pipeline-map, .models-map { grid-column: span 1; }
+  }
+</style>

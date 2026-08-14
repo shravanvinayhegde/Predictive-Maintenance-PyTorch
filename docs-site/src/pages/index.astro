@@ -1,0 +1,142 @@
+---
+import Base from "../layouts/Base.astro";
+import Waveform from "../components/Waveform.astro";
+import { REPO, HYPERPARAMS } from "../data/content";
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Overview" current="System nominal">
+  <div class="eyebrow">shravanvinayhegde / predictive-maintenance-pytorch</div>
+  <h1 class="hero-title">Remaining Useful Life,<br/>read straight off the sensors.</h1>
+  <p class="hero-sub">
+    {REPO.tagline} This site is a code-grounded review of the implementation —
+    not a tutorial — for engineers auditing architecture, data handling, and
+    evaluation methodology.
+  </p>
+
+  <div class="hero-actions">
+    <a href={base + "map/"} class="btn btn-primary">Open project map →</a>
+    <a href={REPO.notebookUrl} target="_blank" rel="noopener" class="btn btn-ghost">View NASA_pytorch.ipynb</a>
+  </div>
+
+  <Waveform />
+
+  <section class="grid-sections">
+    <a href={base + "pipeline/"} class="section-card">
+      <span class="section-n mono">02</span>
+      <h3>Data pipeline</h3>
+      <p>Download → EDA → RUL labeling → engine-grouped split → standardization → sliding windows → <span class="mono">Dataset</span>/<span class="mono">DataLoader</span>. Nine stages, each traced to its notebook cell.</p>
+    </a>
+    <a href={base + "architecture/"} class="section-card">
+      <span class="section-n mono">03</span>
+      <h3>Model architecture</h3>
+      <p>MLP, 1D-CNN, LSTM, GRU — four PyTorch models sharing one input/output contract, plus a Random Forest used strictly as a benchmark. Layer-by-layer tensor shapes.</p>
+    </a>
+    <a href={base + "training/"} class="section-card">
+      <span class="section-n mono">04</span>
+      <h3>Training & evaluation</h3>
+      <p>One shared training loop for all four networks — Adam, MSE loss, per-epoch validation MAE — plus the held-out test scoring function.</p>
+    </a>
+    <a href={base + "results/"} class="section-card">
+      <span class="section-n mono">05</span>
+      <h3>Results</h3>
+      <p>MAE / RMSE / R² across all five models on NASA's official test engines, plus documented limitations and extension paths.</p>
+    </a>
+  </section>
+
+  <section class="panel spec-panel">
+    <div class="spec-head">
+      <h3>Core hyperparameters</h3>
+      <span class="tag">seed 42</span>
+    </div>
+    <div class="spec-grid">
+      {HYPERPARAMS.map((h) => (
+        <div class="spec-row">
+          <span class="mono spec-name">{h.name}</span>
+          <span class="mono spec-value">{h.value}</span>
+          <span class="spec-where">{h.where}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="panel scope-panel">
+    <h3>Scope of this documentation</h3>
+    <p>
+      <span class="mono">NASA_pytorch.ipynb</span> is the only notebook this site documents in depth — it's the
+      repository's core predictive-maintenance deliverable. <span class="mono">Experiments/</span> and
+      <span class="mono">Quick-Reaps/</span> hold separate, unrelated PyTorch notebooks (image/audio/text
+      classification, and PyTorch fundamentals references) kept in the same repository for convenience; see the
+      <a href={base + "structure/"}>repository page</a> for what each one covers.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .hero-title {
+    font-size: clamp(30px, 4.4vw, 46px);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 14px 0 16px;
+    max-width: 16ch;
+  }
+  .hero-sub { color: var(--text-dim); max-width: 62ch; font-size: 15px; margin: 0 0 26px; }
+  .hero-actions { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 16px; border-radius: 6px;
+    font-size: 13.5px; text-decoration: none; font-weight: 500;
+    border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--telemetry-cyan); color: #06201c; }
+  .btn-primary:hover { background: #7ff2df; }
+  .btn-ghost { border-color: var(--line-hair-bright); color: var(--text-primary); }
+  .btn-ghost:hover { border-color: var(--telemetry-cyan); color: var(--telemetry-cyan); }
+
+  .grid-sections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 40px 0 28px;
+  }
+  .section-card {
+    display: block;
+    padding: 20px 20px 18px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-hair);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .section-card:hover { border-color: var(--telemetry-cyan-dim); transform: translateY(-1px); }
+  .section-n { color: var(--signal-amber); font-size: 11px; }
+  .section-card h3 { margin: 10px 0 8px; font-size: 16px; }
+  .section-card p { margin: 0; color: var(--text-dim); font-size: 13px; line-height: 1.6; }
+
+  .spec-panel, .scope-panel { padding: 22px 24px; margin-bottom: 18px; }
+  .spec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .spec-head h3 { font-size: 14px; }
+  .spec-grid { display: flex; flex-direction: column; }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 160px 140px 1fr;
+    gap: 12px;
+    padding: 9px 0;
+    border-top: 1px solid var(--line-hair);
+    font-size: 13px;
+    align-items: baseline;
+  }
+  .spec-row:first-child { border-top: none; }
+  .spec-name { color: var(--telemetry-cyan); }
+  .spec-value { color: var(--text-primary); }
+  .spec-where { color: var(--text-dim); }
+
+  .scope-panel h3 { font-size: 14px; margin-bottom: 10px; }
+  .scope-panel p { color: var(--text-dim); font-size: 13.5px; line-height: 1.7; margin: 0; }
+  .scope-panel a { color: var(--telemetry-cyan); }
+
+  @media (max-width: 700px) {
+    .grid-sections { grid-template-columns: 1fr; }
+    .spec-row { grid-template-columns: 1fr; gap: 3px; }
+  }
+</style>

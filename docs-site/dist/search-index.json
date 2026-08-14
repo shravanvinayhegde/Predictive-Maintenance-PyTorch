@@ -1,0 +1,31 @@
+[
+  { "title": "Overview", "section": "Home", "href": "", "keywords": "hero thesis RUL remaining useful life turbofan" },
+  { "title": "Project map", "section": "Home", "href": "map/", "keywords": "one page summary quick review architecture stack directory" },
+
+  { "title": "01 · Download & extract", "section": "Data pipeline", "href": "pipeline/#download", "keywords": "requests zip s3 nasa phm dataset download extract" },
+  { "title": "02 · Load into DataFrames", "section": "Data pipeline", "href": "pipeline/#load", "keywords": "pandas read_csv columns schema unit_number sensor_measurement" },
+  { "title": "03 · EDA: missing values & constant sensors", "section": "Data pipeline", "href": "pipeline/#eda", "keywords": "nunique constant sensors missing values eda" },
+  { "title": "04 · Engineer the RUL label", "section": "Data pipeline", "href": "pipeline/#label", "keywords": "RUL_CAP 125 piecewise linear label groupby max_cycle" },
+  { "title": "05 · Engine-grouped train/val split", "section": "Data pipeline", "href": "pipeline/#split", "keywords": "GroupShuffleSplit unit_number leakage train validation" },
+  { "title": "06 · Standardize features", "section": "Data pipeline", "href": "pipeline/#scale", "keywords": "standardization mean std z-score train_mean train_std" },
+  { "title": "07 · Slide a window per engine", "section": "Data pipeline", "href": "pipeline/#window", "keywords": "WINDOW_SIZE 30 sliding window sequence create_sequences" },
+  { "title": "08 · Dataset & DataLoader", "section": "Data pipeline", "href": "pipeline/#dataset", "keywords": "RULDataset DataLoader batch_size 64 torch.utils.data" },
+  { "title": "09 · Prepare the official test set", "section": "Data pipeline", "href": "pipeline/#testprep", "keywords": "test set left pad truncated engines create_test_sequences" },
+  { "title": "Sensor reference (21 channels)", "section": "Data pipeline", "href": "pipeline/#sensors", "keywords": "sensor_measurement T2 T24 T30 T50 P2 P15 P30 Nf Nc epr" },
+
+  { "title": "MLP", "section": "Model architecture", "href": "architecture/#mlp", "keywords": "MLP flatten linear relu baseline MLPModel" },
+  { "title": "1D-CNN", "section": "Model architecture", "href": "architecture/#cnn1d", "keywords": "1D CNN conv1d kernel adaptive avg pool CNN1DModel" },
+  { "title": "LSTM", "section": "Model architecture", "href": "architecture/#lstm", "keywords": "LSTM recurrent hidden state memory cell LSTMModel" },
+  { "title": "GRU", "section": "Model architecture", "href": "architecture/#gru", "keywords": "GRU recurrent gating GRUModel" },
+  { "title": "Random Forest benchmark", "section": "Model architecture", "href": "architecture/#rf", "keywords": "RandomForestRegressor scikit-learn benchmark n_estimators max_depth" },
+
+  { "title": "Training loop", "section": "Training & eval", "href": "training/#loop", "keywords": "Adam MSELoss optimizer zero_grad backward step epochs train_model" },
+  { "title": "Evaluation function", "section": "Training & eval", "href": "training/#eval", "keywords": "evaluate MAE RMSE R2 mean_absolute_error test set" },
+  { "title": "Hyperparameters", "section": "Training & eval", "href": "training/#hyperparams", "keywords": "WINDOW_SIZE RUL_CAP BATCH_SIZE EPOCHS LR learning rate seed 42" },
+
+  { "title": "Results table", "section": "Results", "href": "results/", "keywords": "MAE RMSE R2 comparison test scores not reported" },
+  { "title": "Limitations & extensions", "section": "Results", "href": "results/#limitations", "keywords": "FD002 FD003 FD004 transformer attention PHM score k-fold" },
+
+  { "title": "Repository structure", "section": "Repository", "href": "structure/", "keywords": "file tree Experiments Quick-Reaps directory notebooks" },
+  { "title": "C-MAPSS sub-datasets", "section": "Repository", "href": "structure/#subdatasets", "keywords": "FD001 FD002 FD003 FD004 operating conditions fault modes" }
+]
