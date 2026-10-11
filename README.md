@@ -20,6 +20,8 @@ The core deliverable, [`NASA_pytorch.ipynb`](./NASA_pytorch.ipynb), takes the pr
 - **Four PyTorch architectures** (MLP, 1D-CNN, LSTM, GRU) trained with one shared, reusable training loop, plus a **scikit-learn Random Forest** used strictly as a non-deep-learning benchmark — not as part of the modeling approach.
 - **Consistent evaluation** of all five models (MAE, RMSE, R²) on NASA's official, held-out test engines.
 
+**Headline result (FD001, 10 epochs, single run):** the simple **MLP** achieved the best test MAE of **10.33 cycles** (R² = 0.891), ahead of the Random Forest benchmark (11.90) and the LSTM (12.38). See [Results](#results) for the full table and caveats.
+
 Everything downstream of data loading — scaling, windowing, model definitions, training, evaluation — is implemented in PyTorch and plain Python (NumPy/pandas for data handling). scikit-learn is used only for `GroupShuffleSplit`, the regression scoring metrics, and the Random Forest benchmark.
 
 ---
@@ -98,7 +100,9 @@ The archive is a **zip nested inside a zip** (the outer download wraps a folder 
 | sensor_measurement_20 | W31 | HPT coolant bleed | lbm/s |
 | sensor_measurement_21 | W32 | LPT coolant bleed | lbm/s |
 
-In FD001, a handful of these channels (and one operational setting) never change value across the whole dataset — the notebook detects and drops these **constant sensors** programmatically with `nunique() <= 1` rather than hard-coding which ones they are, so the feature-selection step stays correct even if run on a different sub-dataset.
+In FD001, several of these channels never change value across the whole dataset — the notebook detects and drops these **constant sensors** programmatically with `nunique() <= 1` rather than hard-coding which ones they are. On the executed run it dropped 6 sensors (`sensor_measurement_1, 5, 10, 16, 18, 19`), leaving **18 of 24** candidate features (3 operational settings + 15 sensors).
+
+> **Note:** the constant-column check is applied to the 21 sensor columns only. `operational_setting_3` is also constant in FD001 (always `100.0`), so it is kept, produces `NaN` when standardized (std = 0), and is zero-filled with `np.nan_to_num` before training. In practice the models therefore see 17 informative features plus one all-zero column.
 
 ### Building the RUL target
 
@@ -129,6 +133,8 @@ Predictive-Maintenance-PyTorch/
 │   ├── GTSRB.ipynb                            # Traffic sign recognition, 8-model comparison
 │   ├── Rice_Classification.ipynb              # Tabular classification (rice grain type)
 │   └── Text_Classification_Transformers.ipynb # Text classification with Transformers
+├── assets/                     # Plots exported from the executed notebook (used in this README)
+├── docs-site/                  # Astro documentation site (deployed to GitHub Pages)
 ├── Quick-Reaps/                 # PyTorch fundamentals reference notebooks
 │   ├── pytorch_01.ipynb        # Tensors and core PyTorch operations
 │   ├── pytorch_02.ipynb        # Training workflow via linear regression
@@ -153,7 +159,7 @@ The notebook runs as a single linear pipeline, in this order:
 5. **Split by engine** into train/validation using `GroupShuffleSplit` (80/20, grouped by `unit_number`).
 6. **Standardize features** using only the training split's mean/std.
 7. **Slide a fixed-size window** (`WINDOW_SIZE = 30` cycles) over each engine's chronologically sorted history to build `(X, y)` sequences; the label for each window is the RUL at its final cycle. The official test set uses only each engine's most recent window, left-padded if an engine has fewer than 30 recorded cycles.
-8. **Wrap sequences** in a custom `torch.utils.data.Dataset` / `DataLoader` (`BATCH_SIZE = 64`).
+8. **Wrap sequences** in a custom `torch.utils.data.Dataset` / `DataLoader` (`BATCH_SIZE = 64`). NaNs from the zero-variance `operational_setting_3` column are replaced with `0.0` first.
 9. **Train and evaluate** four PyTorch models plus the Random Forest benchmark with a single shared training/evaluation routine, then compare all five on MAE, RMSE, and R².
 
 ---
@@ -196,17 +202,62 @@ All five models — the four PyTorch networks and the Random Forest benchmark �
 
 ## Results
 
-The notebook produces a sorted comparison table and two plots (test MAE by model, and validation MAE across epochs) once run end-to-end:
+All numbers below come from the executed run saved in [`NASA_pytorch.ipynb`](./NASA_pytorch.ipynb) (PyTorch 2.11.0, CUDA GPU, seed 42). Models are scored on NASA's official FD001 test set: **100 engines**, one prediction per engine at its truncation point, with the true RUL capped at 125.
 
-| Model | Test MAE (cycles) | Test RMSE | Test R² |
-|---|---|---|---|
-| MLP | *run to populate* | *run to populate* | *run to populate* |
-| 1D-CNN | *run to populate* | *run to populate* | *run to populate* |
-| LSTM | *run to populate* | *run to populate* | *run to populate* |
-| GRU | *run to populate* | *run to populate* | *run to populate* |
-| Random Forest (benchmark) | *run to populate* | *run to populate* | *run to populate* |
+| Rank | Model | Test MAE (cycles) | Test RMSE | Test R² |
+|---|---|---|---|---|
+| 1 | **MLP** | **10.33** | **13.26** | **0.891** |
+| 2 | Random Forest (benchmark) | 11.90 | 16.09 | 0.839 |
+| 3 | LSTM | 12.38 | 15.80 | 0.845 |
+| 4 | GRU | 13.12 | 16.75 | 0.825 |
+| 5 | 1D-CNN | 15.32 | 21.44 | 0.714 |
 
-The notebook doesn't ship with pre-executed outputs, so no numbers are hard-coded here — run it end-to-end to reproduce this table on your own machine or in Colab. Two questions worth checking once you have results: does any PyTorch model actually beat the Random Forest benchmark, and do the recurrent models (LSTM/GRU) outperform the simpler MLP/CNN — i.e., does explicit sequence order help on this particular fault mode?
+![Test MAE by model and validation MAE over epochs](assets/results_comparison.png)
+
+*Left: test MAE per model (lower is better). Right: validation MAE per epoch for the four PyTorch models.*
+
+### Validation vs. test
+
+| Model | Final-epoch validation MAE (cycles) | Test MAE (cycles) |
+|---|---|---|
+| MLP | 11.67 | 10.33 |
+| 1D-CNN | 14.44 | 15.32 |
+| LSTM | 15.07 | 12.38 |
+| GRU | 15.78 | 13.12 |
+| Random Forest | 12.28 | 11.90 |
+
+Validation MAE is measured on all sliding windows of the 20 held-out engines, whereas test MAE is measured on one final window per test engine, so the two columns are not directly comparable. The ordering is broadly consistent between them.
+
+### What the results show
+
+- **The MLP won, even though it ignores time order.** Within a 30-cycle window of FD001 (one operating condition, one fault mode), the degradation signal appears to be captured well enough by the flattened window that explicit sequence modelling did not help in this setup.
+- **The Random Forest benchmark beat three of the four PyTorch models on MAE** (LSTM, GRU, 1D-CNN). Only the MLP beat it on all three metrics. The LSTM edges the Random Forest slightly on RMSE (15.80 vs 16.09) and R² (0.845 vs 0.839), but not on MAE.
+- **LSTM and GRU were still improving when training stopped.** Their validation MAE fell from about 62 to about 15–16 cycles over 10 epochs and was still dropping steeply, while the MLP and 1D-CNN had largely plateaued. The 10-epoch budget probably under-represents the recurrent models, so their ranking here should not be read as a verdict on recurrent architectures.
+- **The 1D-CNN was the weakest model** on every metric, with a notably higher RMSE (21.44), which points to a few large errors on individual engines.
+- **LSTM ≈ GRU**, as expected: the GRU is slightly worse on this run, with near-identical training curves.
+
+### Caveats
+
+- This is a **single run with one seed and one train/validation split**, evaluated on only 100 test engines. Differences of 1–2 cycles of MAE (for example MLP vs Random Forest, or LSTM vs GRU) are within what you would expect from seed-to-seed variance and should not be treated as conclusive.
+- All models use the same fixed budget (10 epochs, Adam, lr = 1e-3, no scheduling, no early stopping, no hyperparameter search). This makes the comparison like-for-like, not tuned.
+- The RUL target is capped at 125, and the test ground truth is capped identically, so these MAE values are on the capped scale and are not directly comparable to papers that report uncapped RUL or the asymmetric PHM score.
+
+### Other notebook outputs
+
+| Output | Value |
+|---|---|
+| Raw shapes | `train_df` (20,631 × 26), `test_df` (13,096 × 26), `rul_df` (100 × 1) |
+| Missing values | 0 |
+| Train / validation split | 80 engines (16,561 rows) / 20 engines (4,070 rows) |
+| Sliding-window tensors | `X_train` (14,241, 30, 18), `X_val` (3,490, 30, 18), `X_test` (100, 30, 18) |
+| Batches per epoch | 223 train, 55 validation |
+| Random Forest validation MAE | 12.28 cycles |
+
+Engine 1's raw sensor trends and its capped RUL target, as plotted in the notebook:
+
+![Engine 1 sensor trends](assets/engine1_sensors.png)
+
+![Engine 1 piecewise-linear RUL target](assets/rul_target_engine1.png)
 
 ---
 
@@ -228,7 +279,9 @@ cd Predictive-Maintenance-PyTorch
 jupyter notebook NASA_pytorch.ipynb
 ```
 
-Or open it directly in Colab using the badge at the top of this README. No manual dataset download is required — the first two cells fetch and extract the C-MAPSS FD001 files automatically. Run all cells top to bottom; training all four PyTorch models plus the Random Forest benchmark takes a few minutes on CPU and well under a minute on GPU.
+Or open it directly in Colab using the badge at the top of this README (recommended — the executed results above were produced on a Colab GPU). No manual dataset download is required — the first two cells fetch and extract the C-MAPSS FD001 files automatically. Run all cells top to bottom.
+
+> **Running locally:** the download/extract cells and `find_file()` use Colab-style paths under `/content/`. Change `/content/` to a directory that exists on your machine (for example `./data/`) before running outside Colab.
 
 ---
 
@@ -236,11 +289,13 @@ Or open it directly in Colab using the badge at the top of this README. No manua
 
 - **Single sub-dataset**: only FD001 (1 operating condition, 1 fault mode) is used. FD002–FD004 add multiple operating conditions and a second fault mode, which typically requires per-condition normalization instead of a single global standardization.
 - **Fixed training budget**: 10 epochs, no learning-rate scheduling, no early stopping, and no hyperparameter search — the comparison is meant to be a fair like-for-like baseline across architectures, not a tuned leaderboard entry.
-- **Single train/validation split**: one `GroupShuffleSplit`, not k-fold cross-validation, so validation metrics carry some split-to-split variance.
+- **Single train/validation split and single seed**: one `GroupShuffleSplit` and one training run per model, not k-fold cross-validation or repeated seeds, so reported metrics carry split-to-split and seed-to-seed variance.
+- **Recurrent models look under-trained**: LSTM and GRU validation MAE was still falling at epoch 10, so a longer budget or early stopping on a larger epoch cap could change the ranking.
+- **Constant operational setting not dropped**: `operational_setting_3` is constant in FD001 but is only zero-filled after standardization rather than removed (see the note under [Files and schema](#files-and-schema)).
 - **No attention-based or Transformer sequence model** is included alongside the MLP/CNN/LSTM/GRU comparison.
 - **No official PHM scoring function**: the standard C-MAPSS literature also reports an asymmetric "PHM score" that penalizes late predictions more than early ones; this project reports MAE/RMSE/R² only.
 
-Natural next steps: extend the pipeline to FD002–FD004, add the asymmetric PHM scoring metric, try a Transformer or attention-augmented recurrent model, and add learning-rate scheduling / early stopping for a fairer per-model tuning comparison.
+Natural next steps: extend the pipeline to FD002–FD004, add the asymmetric PHM scoring metric, train the recurrent models longer with early stopping, repeat runs over several seeds to report mean ± std, drop constant operational settings explicitly, and try a Transformer or attention-augmented recurrent model.
 
 ---
 
