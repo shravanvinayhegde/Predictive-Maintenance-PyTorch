@@ -212,7 +212,7 @@ All numbers below come from the executed run saved in [`NASA_pytorch.ipynb`](./N
 | 4 | GRU | 13.12 | 16.75 | 0.825 |
 | 5 | 1D-CNN | 15.32 | 21.44 | 0.714 |
 
-![Test MAE by model and validation MAE over epochs](assets/results_comparison.png)
+![Test MAE by model and validation MAE over epochs](https://github.com/shravanvinayhegde/Predictive-Maintenance-PyTorch/blob/main/docs-site/dist/assets/results_comparison.png)
 
 *Left: test MAE per model (lower is better). Right: validation MAE per epoch for the four PyTorch models.*
 
@@ -255,9 +255,9 @@ Validation MAE is measured on all sliding windows of the 20 held-out engines, wh
 
 Engine 1's raw sensor trends and its capped RUL target, as plotted in the notebook:
 
-![Engine 1 sensor trends](assets/engine1_sensors.png)
+![Engine 1 sensor trends](https://github.com/shravanvinayhegde/Predictive-Maintenance-PyTorch/blob/main/docs-site/dist/assets/engine1_sensors.png)
 
-![Engine 1 piecewise-linear RUL target](assets/rul_target_engine1.png)
+![Engine 1 piecewise-linear RUL target](https://github.com/shravanvinayhegde/Predictive-Maintenance-PyTorch/blob/main/docs-site/dist/assets/rul_target_engine1.png)
 
 ---
 
